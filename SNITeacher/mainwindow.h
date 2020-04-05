@@ -34,6 +34,7 @@ private slots:
     void on_style4_triggered();
     void on_style5_triggered();
     void on_style6_triggered();
+    void on_action_about_triggered();
 
 private:
     QIcon* p_icon;

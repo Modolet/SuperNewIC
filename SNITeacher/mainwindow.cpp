@@ -4,6 +4,7 @@
 #include <QString>
 #include <QIcon>
 #include <QDebug>
+#include <QMessageBox>
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -34,6 +35,7 @@ void MainWindow::initWindow()
     connect(ui->style4,SIGNAL(triggered()),this,SLOT(on_style4_triggered()));
     connect(ui->style5,SIGNAL(triggered()),this,SLOT(on_style5_triggered()));
     connect(ui->style6,SIGNAL(triggered()),this,SLOT(on_style6_triggered()));
+    connect(ui->action_about,SIGNAL(triggered()),this,SLOT(on_action_about_triggered()));
 }
 
 void MainWindow::initQss(int n)
@@ -172,4 +174,9 @@ void MainWindow::on_style5_triggered()
 void MainWindow::on_style6_triggered()
 {
     initQss(6);
+}
+
+void MainWindow::on_action_about_triggered()
+{
+    QMessageBox::information(this,"关于","本软件版权归湖北工业大学超新芯团队所有\n版本号:v0.3");
 }
