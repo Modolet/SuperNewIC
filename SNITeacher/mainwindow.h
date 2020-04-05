@@ -7,6 +7,11 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
+struct data
+{
+    int style;
+};
+
 class QIcon;
 
 class MainWindow : public QMainWindow
@@ -32,9 +37,13 @@ private slots:
 
 private:
     QIcon* p_icon;
+    struct data sc_data;
     Ui::MainWindow *ui;
     void initWindow();
     void initQss(int n);
     void initIcons();
+    void dataRead();
+    void dataWrite();
+    void dataSet();//读取文件配置
 };
 #endif // MAINWINDOW_H

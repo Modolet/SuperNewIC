@@ -9,7 +9,6 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    initQss(3);//设置qss风格
     initIcons();//初始化图标
     initWindow();
 }
@@ -21,6 +20,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::initWindow()
 {
+    dataRead();
+    dataSet();
     //这里是让表格表头均分
     ui->tableWidget_score->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableWidget_list->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
@@ -41,21 +42,27 @@ void MainWindow::initQss(int n)
     switch (n) {
     case 1:
         str_file = ":/qss/style01.qss";
+        sc_data.style = 1;
         break;
     case 2:
         str_file = ":/qss/style02.qss";
+        sc_data.style = 2;
         break;
     case 3:
         str_file = ":/qss/style03.qss";
+        sc_data.style = 3;
         break;
     case 4:
         str_file = ":/qss/style04.qss";
+        sc_data.style = 4;
         break;
     case 5:
         str_file = ":/qss/style05.qss";
+        sc_data.style = 5;
         break;
     case 6:
         str_file = ":/qss/style06.qss";
+        sc_data.style = 6;
         break;
 
     }
@@ -64,6 +71,7 @@ void MainWindow::initQss(int n)
     QString s_qss = QLatin1String(f_qss.readAll());
     qApp->setStyleSheet(s_qss);
     f_qss.close();
+    dataWrite();
 }
 
 void MainWindow::initIcons()
@@ -79,6 +87,36 @@ void MainWindow::initIcons()
     ui->pushButton_message->setIcon(*p_icon);
     p_icon->addFile(":/icon/notice.png");
     ui->pushButton_notice->setIcon(*p_icon);
+}
+
+void MainWindow::dataRead()//读取配置到文件
+{
+    QFile f_data("data");
+    f_data.open(QIODevice::ReadWrite);
+    if( f_data.open(QIODevice::ReadOnly))//如果文件不存在
+    {//就设置默认配置
+        qDebug() << "打开文件失败";
+        sc_data.style=3;
+    }
+    else
+    {
+        f_data.read((char*)&sc_data,sizeof(sc_data));
+    }
+    f_data.close();
+}
+
+void MainWindow::dataWrite()//写入配置到文件
+{
+    QFile f_data("data");
+    f_data.open(QIODevice::ReadWrite);
+    f_data.write((char*)&sc_data,sizeof(sc_data));
+    f_data.close();
+}
+
+//初始化data到配置
+void MainWindow::dataSet()
+{
+    initQss(sc_data.style);
 }
 
 void MainWindow::on_pushButton_list_clicked()
@@ -109,7 +147,6 @@ void MainWindow::on_pushButton_score_clicked()
 void MainWindow::on_style1_triggered()
 {
     initQss(1);
-    qDebug() << "style01";
 }
 
 void MainWindow::on_style2_triggered()
