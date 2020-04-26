@@ -3,9 +3,16 @@
 
 #include <QMainWindow>
 #include "test.h"
+#include "tableview.h"
+
+// 串口部分头文件
 #include <QSerialPort>
 #include <QSerialPortInfo>
 
+// 添加布局相关的头文件
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QHeaderView>
 
 
 QT_BEGIN_NAMESPACE
@@ -36,5 +43,11 @@ private slots:
 private:
     Ui::MainWindow *ui;
     Test testWin;
+    TableView tableView;
+
+
+private:
+    void initMainWindow();
+
 };
 #endif // MAINWINDOW_H

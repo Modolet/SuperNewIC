@@ -8,13 +8,11 @@ Test::Test(QWidget *parent) :
     ui->setupUi(this);
     // 获取有用或者闲置端口，并且添加到串口选择下拉框
     findSerial();
-
     // 初始化串口，设置波特率，停止位...
     initSerials();
 
+
     connect(&serial,&QSerialPort::readyRead,this,&Test::readData);
-
-
 }
 
 Test::~Test()
@@ -22,7 +20,7 @@ Test::~Test()
     delete ui;
 }
 
-
+// 查找计算机可用串口
 void Test::findSerial()
 {
     foreach(const QSerialPortInfo &info,QSerialPortInfo::availablePorts())
