@@ -27,6 +27,10 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    void signalsToSlots();                  // 设置信号和槽函数连接
+
+signals:
+
 private slots:
     void on_pushButton_resTest_clicked();
 
@@ -38,7 +42,12 @@ private slots:
 
     void on_pushButton_testSpecific_clicked();
 
-    void on_pushButton_singleTest_clicked();
+    void upDataToTableView(double, double, double, double, double);     // 增加一条记录到主窗口展示区域
+
+
+    void on_pushButton_startTest_clicked();
+
+    void on_pushButton_stopTest_clicked();
 
 private:
     Ui::MainWindow *ui;

@@ -6,13 +6,11 @@ Test::Test(QWidget *parent) :
     ui(new Ui::Test)
 {
     ui->setupUi(this);
-    // 获取有用或者闲置端口，并且添加到串口选择下拉框
-    findSerial();
-    // 初始化串口，设置波特率，停止位...
-    initSerials();
 
-
-    connect(&serial,&QSerialPort::readyRead,this,&Test::readData);
+    findSerial();               // 获取有用或者闲置端口，并且添加到串口选择下拉框
+    initSerials();              // 初始化串口，设置波特率，停止位...
+    signalsToSlots();
+    ui->checkBox_openSerial->setCheckState(Qt::Checked);    // 打开窗口选中
 }
 
 Test::~Test()
@@ -20,8 +18,18 @@ Test::~Test()
     delete ui;
 }
 
-// 查找计算机可用串口
-void Test::findSerial()
+
+void Test::signalsToSlots()             // 把信号和槽函数连接起来
+{
+    // 在测试专用下，一旦串口有数据进来就执行测试窗口的槽函数
+    connect(&serial, &QSerialPort::readyRead, this, &Test::readData);
+    // 主窗口进行单次测量的时候，调用单次测量槽函数
+    connect(&serial, &QSerialPort::readyRead, this, &Test::slot_singleTest); 
+    // 主窗口进行单次测量的时候，调用多次测量槽函数
+    connect(&serial, &QSerialPort::readyRead, this, &Test::slot_repeatTest);
+}
+
+void Test::findSerial()                 // 查找计算机可用串口
 {
     foreach(const QSerialPortInfo &info,QSerialPortInfo::availablePorts())
     {
@@ -35,23 +43,14 @@ void Test::findSerial()
     }
 }
 
-
-
-void Test::initSerials()
+void Test::initSerials()                                                // 初始化窗口
 {
-    // serial.open(QIODevice::ReadWrite);
-    // 设置串口名
-    serial.setPortName("COM1"); // ui->comboBox_serialSelect->currentText()
-    // 设置波特率
-    serial.setBaudRate(ui->comboBox_baudRate->currentText().toInt());
-    // 设置停止位
-    serial.setStopBits(QSerialPort::OneStop);
-    // 设置数据位
-    serial.setDataBits(QSerialPort::Data8);
-    // 设置校验位
-    serial.setParity(QSerialPort::NoParity);
-    // 设置流控制
-    serial.setFlowControl(QSerialPort::NoFlowControl);
+    serial.setPortName(ui->comboBox_serialSelect->currentText());       // 设置串口名
+    serial.setBaudRate(ui->comboBox_baudRate->currentText().toInt());   // 设置波特率
+    serial.setStopBits(QSerialPort::OneStop);                           // 设置停止位
+    serial.setDataBits(QSerialPort::Data8);                             // 设置数据位
+    serial.setParity(QSerialPort::NoParity);                            // 设置校验位
+    serial.setFlowControl(QSerialPort::NoFlowControl);                  // 设置流控制
 }
 
 
@@ -148,14 +147,18 @@ void Test::on_pushButton_clearSend_clicked()
 // 接受数据
 void Test::readData()
 {
-    QByteArray buf;
-    buf = serial.readAll();
-    if(!buf.isEmpty())
+    if(!isMainWindowUse)
     {
-        ui->plainTextEdit_receiveDisplay->appendPlainText(buf);
+        QByteArray buf;
+        buf = serial.readAll();
+        if(!buf.isEmpty())
+        {
+            ui->plainTextEdit_receiveDisplay->appendPlainText(buf);
+        }
+        buf.clear();
     }
-    buf.clear();
 }
+
 
 // 清除接收区
 void Test::on_pushButton_clearReceive_clicked()
@@ -165,7 +168,60 @@ void Test::on_pushButton_clearReceive_clicked()
 
 
 // 主窗口调用发送数据
-void Test::mainWinSend(QByteArray str)
+void Test::mainWinSend(QByteArray data)
 {
-    serial.write(str);
+    serial.write(data);
+}
+
+
+// 单次测量
+void Test::slot_singleTest()
+{
+    qDebug() << isMainWindowUse << ' ' << "槽函数执行了";
+    if(isMainWindowUse && isSingletest)
+    {
+        double R0 = 1, R01 = 2, R1 = 3, R2 = 4, Rx = 5;
+        static QByteArray vis1, vis2;
+        static int i = 0;
+        vis1 = serial.readAll();       // 从串口读取数据放在vis1中
+        if(i % 3 == 0 && i != 0)
+        {
+            if(i == 3)
+                vis2 = vis1;            // 获得第一组测量数据的电桥状态
+            if(vis2 != vis1)            // 获得每组第三次收到的数据与第一组的数据进行比较判断电桥是否平衡
+            {
+                emit testDone(R0, R01, R1, R2, Rx);       // 把一次测量的一组数据发送给主窗口数据展示区域
+                return;
+            }
+        }
+        serial.write("data");
+        vis1.clear();
+        i++;
+    }
+}
+
+// 多次测量
+void Test::slot_repeatTest()
+{
+    if(isMainWindowUse && !isSingletest)
+    {
+        double R0 = 1, R01 = 2, R1 = 3, R2 = 4, Rx = 5;
+        static QByteArray vis1, vis2;
+        static int i = 0;
+        vis1 = serial.readAll();       // 从串口读取数据放在vis1中
+        if(i % 3 == 0 && i != 0)
+        {
+            if(i == 3)
+                vis2 = vis1;            // 获得第一组测量数据的电桥状态
+            if(vis2 != vis1)            // 获得每组第三次收到的数据与第一组的数据进行比较判断电桥是否平衡
+            {
+                emit testDone(R0, R01, R1, R2, Rx);       // 把一次测量的一组数据发送给主窗口数据展示区域
+                return;
+            }
+        }
+        serial.write("data");
+        vis1.clear();
+        i++;
+    }
+
 }

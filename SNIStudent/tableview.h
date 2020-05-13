@@ -3,12 +3,12 @@
 
 #include <QTableView>
 
-
 // 和数据库操作有关
 #include <QSqlDatabase>
 #include <QSqlError>
 #include <QSqlQuery>
 #include <QSqlTableModel>
+#include <QSqlRecord>
 
 // 信息提示窗口类头文件
 #include <QMessageBox>
@@ -22,9 +22,14 @@ public:
     explicit TableView(QWidget *parent = nullptr);
     ~TableView();
 
+    void MainWin_addRecordToTable(double, double, double, double, double);  // 外部函数向数据库发送记录
+    void MainWin_setHandSubmit(bool flag);
+
+
 private:
     QSqlDatabase db;
     QSqlTableModel *tableModel;
+    QSqlQuery query;
 
 
 private:

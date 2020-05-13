@@ -182,13 +182,6 @@
            </property>
           </spacer>
          </item>
-         <item row="0" column="1">
-          <widget class="QPushButton" name="pushButton_singleTest">
-           <property name="text">
-            <string>单次测试</string>
-           </property>
-          </widget>
-         </item>
          <item row="1" column="3">
           <spacer name="verticalSpacer_2">
            <property name="orientation">
@@ -222,13 +215,6 @@
           <widget class="QPushButton" name="pushButton_stopTest">
            <property name="text">
             <string>停止测试</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="3">
-          <widget class="QPushButton" name="pushButton_multipleTest">
-           <property name="text">
-            <string>多次测试</string>
            </property>
           </widget>
          </item>
@@ -293,6 +279,23 @@
             </size>
            </property>
           </spacer>
+         </item>
+         <item row="0" column="1">
+          <widget class="QRadioButton" name="radioButton_singleTest">
+           <property name="text">
+            <string>单次测试</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="QRadioButton" name="radioButton_repeatTest">
+           <property name="text">
+            <string>多次测试</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>
