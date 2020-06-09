@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>arrowDown</file>
+        <file>arrowRight</file>
+    </qresource>
+</RCC>

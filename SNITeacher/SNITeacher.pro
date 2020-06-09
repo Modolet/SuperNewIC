@@ -21,14 +21,18 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     nettest.cpp \
-    network.cpp
+    network.cpp \
+    studentlist.cpp \
+    studentlistbuddy.cpp
 
 HEADERS += \
     const.h \
     login.h \
     mainwindow.h \
     nettest.h \
-    network.h
+    network.h \
+    studentlist.h \
+    studentlistbuddy.h
 
 FORMS += \
     login.ui \
@@ -40,4 +44,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
-    Icon/Icon.qrc
+    icon.qrc \
+    qss.qrc
