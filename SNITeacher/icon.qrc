@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>arrowDown</file>
         <file>arrowRight</file>
+        <file>ICON.ico</file>
     </qresource>
 </RCC>

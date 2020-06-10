@@ -19,27 +19,15 @@ void StudentList::initMenu()
     groupMenu = new QMenu();
     studentMenu = new QMenu();
     groupNameEdit = new QLineEdit();
-    QAction *addGroup = new QAction("添加分组", this);
-    QAction *delGroup = new QAction("删除该组", this);
-    QAction *rename = new QAction("重命名", this);
-    QAction *addStudent = new QAction("添加学生",this);
-    QAction *viewScore = new QAction("查看成绩",this);
+    QAction *viewScore = new QAction("查看学生实验数据",this);
     //设置
     groupNameEdit->setParent(this);               //设置父类
     groupNameEdit->hide();                        //设置初始时隐藏
     groupNameEdit->setPlaceholderText("未命名");   //设置初始时的内容
     //布局
-    blankMenu->addAction(addGroup);
-    groupMenu->addAction(delGroup);
-    groupMenu->addAction(rename);
-    groupMenu->addAction(addStudent);
     studentMenu->addAction(viewScore);
     //信息槽
     connect(groupNameEdit,SIGNAL(editingFinished()),this,SLOT(slotRenameEditFshed()));
-    connect(addGroup,SIGNAL(triggered()),this,SLOT(slotAddGroup()));
-    connect(delGroup,SIGNAL(triggered()),this,SLOT(slotDelGroup()));
-    connect(rename,SIGNAL(triggered()),this,SLOT(slotRename()));
-    connect(addStudent,SIGNAL(triggered()),this,SLOT(slot_addStudent()));
 }
 
 //添加学生，测试用

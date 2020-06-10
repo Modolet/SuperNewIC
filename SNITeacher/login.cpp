@@ -132,5 +132,5 @@ void Login::on_pushButton_changePasswd_clicked() {
     cpwd->setWindowFlag(Qt::Window);
 
     cpwd->show();
-    //    cpwd->setWindowTitle(QString("您正在修改%1的密码").arg(sc_loginData.userID));
+    cpwd->setWindowTitle(QString("您正在修改密码"));
 }

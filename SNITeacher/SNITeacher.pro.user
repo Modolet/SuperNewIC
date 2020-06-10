@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.11.1, 2020-06-10T03:39:38. -->
+<!-- Written by QtCreator 4.11.1, 2020-06-10T19:42:27. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -287,8 +287,9 @@
     </valuelist>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:E:/Modolet/Desktop/SNITeacher/SNITeacher.pro</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">E:/Modolet/Desktop/SNITeacher/SNITeacher.pro</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">SNITeacher2</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:E:/Modolet/Git/SuperNewIC/SNITeacher/SNITeacher.pro</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">E:/Modolet/Git/SuperNewIC/SNITeacher/SNITeacher.pro</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
