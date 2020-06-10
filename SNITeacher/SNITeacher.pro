@@ -1,5 +1,6 @@
 QT       += core gui
 QT       += network
+QT       += sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -17,24 +18,25 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    changepasswd.cpp \
     login.cpp \
     main.cpp \
     mainwindow.cpp \
-    nettest.cpp \
     network.cpp \
     studentlist.cpp \
     studentlistbuddy.cpp
 
 HEADERS += \
+    changepasswd.h \
     const.h \
     login.h \
     mainwindow.h \
-    nettest.h \
     network.h \
     studentlist.h \
     studentlistbuddy.h
 
 FORMS += \
+    changepasswd.ui \
     login.ui \
     mainwindow.ui
 

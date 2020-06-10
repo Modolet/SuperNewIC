@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QLabel>
 #include <QEvent>
+#include <QString>
 
 class StudentListBuddy : public QWidget
 {
@@ -11,8 +12,11 @@ class StudentListBuddy : public QWidget
 public:
     explicit StudentListBuddy(QWidget *parent = nullptr);
     void initUi();//初始化UI
-    QLabel *name;//姓名
-    QLabel *sign;//签名
+    QLabel  *name;//姓名
+    QLabel  *sign;//签名
+    int id;  //学生的id
+    QString sex;//性别
+    QString classroom;//班级
 
 signals:
 

@@ -1,6 +1,6 @@
 #ifndef CONST_H
 #define CONST_H
-
+#include <QString>
 //--------------------------------------这里是宏定义---------------------------------
 //公共宏定义+++++++++++++++++++++++++
 #define MSGFLAG             0x6666
@@ -35,19 +35,32 @@ struct TEALogin : public baseData
     TEALogin():baseData(TEAMSGLOGIN,sizeof(struct TEALogin)){};
 };
 
-//学生信息结构体++++++++++++++++++++++++++++
-struct studentInfo : public baseData
-{
-    int     stuID;
-    char    stuName[20];
-    studentInfo():baseData(TEAMSGGETSTUINFO,sizeof (struct studentInfo)){};
+////学生信息结构体++++++++++++++++++++++++++++
+//struct studentInfo : public baseData
+//{
+//    int     stuID;
+//    char    stuName[20];
+//    studentInfo():baseData(TEAMSGGETSTUINFO,sizeof (struct studentInfo)){};
+//};
+////发送消息结构体++++++++++++++++++++++++++++
+//struct teaSendMessage : public baseData
+//{
+//    int     stuID;
+//    char    message[256];
+//    teaSendMessage():baseData(TEAMSGSEND,sizeof(struct teaSendMessage)){};
+//};
+//教师信息结构体
+struct info{
+    QString name;
+    QString sign;
 };
-//发送消息结构体++++++++++++++++++++++++++++
-struct teaSendMessage : public baseData
-{
-    int     stuID;
-    char    message[256];
-    teaSendMessage():baseData(TEAMSGSEND,sizeof(struct teaSendMessage)){};
+//学生信息结构体
+struct studentInfo{
+    int id;
+    QString name;
+    QString classroom;
+    QString sign;
+    QString sex;
 };
 
 //--------------------------------------这里是各种数据结构体------------------------end
