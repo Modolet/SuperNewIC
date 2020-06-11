@@ -1,6 +1,7 @@
 #ifndef CONST_H
 #define CONST_H
 #include <QString>
+#include <QByteArray>
 //--------------------------------------这里是宏定义---------------------------------
 //公共宏定义+++++++++++++++++++++++++
 #define MSGFLAG             0x6666
@@ -53,6 +54,8 @@ struct TEALogin : public baseData
 struct info{
     QString name;
     QString sign;
+    QByteArray image;
+    QString format;
 };
 //学生信息结构体
 struct studentInfo{
@@ -61,6 +64,8 @@ struct studentInfo{
     QString classroom;
     QString sign;
     QString sex;
+    QByteArray image;
+    QString format;
 };
 
 //--------------------------------------这里是各种数据结构体------------------------end

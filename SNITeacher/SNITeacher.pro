@@ -19,6 +19,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     changepasswd.cpp \
+    changeusericon.cpp \
     login.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -28,6 +29,7 @@ SOURCES += \
 
 HEADERS += \
     changepasswd.h \
+    changeusericon.h \
     const.h \
     login.h \
     mainwindow.h \
@@ -37,6 +39,7 @@ HEADERS += \
 
 FORMS += \
     changepasswd.ui \
+    changeusericon.ui \
     login.ui \
     mainwindow.ui
 

@@ -12,7 +12,6 @@ bool network::Login(TEALogin sc_tea) {
   }
   //获取数据
   sq.next();
-//  qDebug() << sq.value(1);
   if (sq.value(1) != 1) {
     QMessageBox::warning(nullptr, "错误！", "请使用教师账号登录！");
     return false;
@@ -40,7 +39,6 @@ QList<studentInfo> network::GetStudentList()
                         sq.value("class").toString(),
                         sq.value("sign").toString(),
                         sq.value("sex").toString()});
-        //qDebug() << sq.value(0) << sq.value(1) << sq.value(2);
     }
     return info;
 }
@@ -82,15 +80,27 @@ bool network::changePwd(int id, QString oldPwd, QString newPwd) {
   }
 }
 
+bool network::updateIcon(int id, const QByteArray *img, QString format)
+{
+    sq.prepare("update datas set image=?,format=? where id=?");
+    sq.addBindValue(QVariant(*img));
+    sq.addBindValue(format);
+    sq.addBindValue(id);
+    if(sq.exec())
+        return true;
+    else
+        return false;
+}
+
 info network::getInfo()
 {
-    if(!sq.exec(QString("select name,sign from datas where id=%1;").arg(ex_id)))
+    if(!sq.exec(QString("select name,sign,image,format from datas where id=%1;").arg(ex_id)))
     {
         QMessageBox::warning(NULL, "错误", db.lastError().text());
         return {0,0};
     }
     sq.next();
-    return {sq.value(0).toString(),sq.value(1).toString()};
+    return {sq.value(0).toString(),sq.value(1).toString(),sq.value("image").toByteArray(),sq.value("format").toString()};
 }
 
 QList<QString> network::getGroupList()

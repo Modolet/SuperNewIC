@@ -8,7 +8,9 @@
 #include <QSqlDatabase>
 #include <QtSql>
 #include <QSqlQuery>
-#include <Qlist>
+#include <QList>
+#include <QByteArray>
+#include <QVariant>
 
 using std::list;
 
@@ -24,6 +26,7 @@ public:
     bool sendMessage(int stuID,char* message);
     bool initSql();
     bool changePwd(int id,QString oldPwd,QString newPwd);
+    bool updateIcon(int id,const QByteArray* img,QString format);
     struct info getInfo();
     QList<QString> getGroupList();
 

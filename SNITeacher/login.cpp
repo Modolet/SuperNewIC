@@ -27,7 +27,6 @@ Login::Login(QWidget *parent) : QMainWindow(parent), ui(new Ui::Login) {
     SetUerEdit();  //读取并初始化界面
     this->show();
     if (ui->checkBox_autoLogin->isChecked() == true) {
-        qDebug() << "自动登录";
         emit(signal_login());  //如果选择了自动登录，就发出登录信号
     }
 }
@@ -103,7 +102,6 @@ void Login::SetUerEdit() {
 }
 
 void Login::on_lineEdit_username_textEdited(const QString &arg1) {
-    qDebug() << arg1.toInt();
     sc_loginData.userID = arg1.toInt();
     WriteLoginData();
 }

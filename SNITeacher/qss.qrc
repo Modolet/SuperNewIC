@@ -1,5 +1,11 @@
 <RCC>
     <qresource prefix="/">
         <file>qss/list.qss</file>
+        <file>qss/style01.qss</file>
+        <file>qss/style02.qss</file>
+        <file>qss/style03.qss</file>
+        <file>qss/style04.qss</file>
+        <file>qss/style05.qss</file>
+        <file>qss/style06.qss</file>
     </qresource>
 </RCC>

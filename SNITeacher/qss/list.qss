@@ -45,3 +45,8 @@ QScrollBar::sub-line:vertical {
     subcontrol-position: top;
     subcontrol-origin: margin;
 }
+
+QPushButton {
+  border-width:40px;
+  border-image: url(:/image/qt.png) 0 0 0 0;
+}
