@@ -7,6 +7,7 @@
 int ex_id;  //全局储存id
 int main(int argc, char* argv[]) {
   QApplication a(argc, argv);
+
   // a.setQuitOnLastWindowClosed(false);
   QString qss;
   QFile qssFile(":/qss/list.qss");

@@ -1,8 +1,6 @@
 #include "network.h"
 
-#include <QDebug>
-#include <QMessageBox>
-#include <QString>
+
 network::network(QObject *parent) : QObject(parent) { initSql(); }
 
 bool network::Login(TEALogin sc_tea) {
@@ -12,16 +10,10 @@ bool network::Login(TEALogin sc_tea) {
   }
   //获取数据
   sq.next();
-  if (sq.value(1) != 1) {
-    QMessageBox::warning(nullptr, "错误！", "请使用教师账号登录！");
-    return false;
-  }
   if (sq.value(0) == QString(sc_tea.userPWD))  //密码正确
     return true;
   else  //密码错误
-  {
     return false;
-  }
 }
 
 QList<studentInfo> network::GetStudentList()
@@ -92,15 +84,49 @@ bool network::updateIcon(int id, const QByteArray *img, QString format)
         return false;
 }
 
-info network::getInfo()
+bool network::updateSign(QString sign)
 {
-    if(!sq.exec(QString("select name,sign,image,format from datas where id=%1;").arg(ex_id)))
+    if(sq.exec(QString("update datas set sign='%1' where id=%2").arg(sign).arg(ex_id)))
+        return true;
+    return false;
+}
+
+bool network::is_teacher(int id)
+{
+    sq.exec(QString("select is_teacher from datas where id=%1").arg(id));
+    sq.next();
+    qDebug() << sq.value(0);
+    if(sq.value(0).toInt() == 1)
+        return true;
+    return false;
+}
+
+QSqlTableModel *network::setModel(int id)
+{
+    QSqlTableModel* model = new QSqlTableModel(this);
+    model->setTable(QString::number(id));
+    model->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    model->select();
+
+    return model;
+}
+
+QSqlQueryModel *network::setDatasModel()
+{
+    QSqlQueryModel* model = new QSqlQueryModel();
+    model->setQuery(sq);
+    return model;
+}
+
+info network::getInfo(int id)
+{
+    if(!sq.exec(QString("select name,sign,image,format,score from datas where id=%1;").arg(id)))
     {
         QMessageBox::warning(NULL, "错误", db.lastError().text());
         return {0,0};
     }
     sq.next();
-    return {sq.value(0).toString(),sq.value(1).toString(),sq.value("image").toByteArray(),sq.value("format").toString()};
+    return {sq.value(0).toString(),sq.value(1).toString(),sq.value("image").toByteArray(),sq.value("format").toString(),sq.value("score").toInt()};
 }
 
 QList<QString> network::getGroupList()

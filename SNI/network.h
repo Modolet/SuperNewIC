@@ -11,6 +11,12 @@
 #include <QList>
 #include <QByteArray>
 #include <QVariant>
+#include <QSqlTableModel>
+#include <QDebug>
+#include <QMessageBox>
+#include <QString>
+#include <QTableView>
+#include <QSqlQueryModel>
 
 using std::list;
 
@@ -27,7 +33,11 @@ public:
     bool initSql();
     bool changePwd(int id,QString oldPwd,QString newPwd);
     bool updateIcon(int id,const QByteArray* img,QString format);
-    struct info getInfo();
+    bool updateSign(QString sign);
+    bool is_teacher(int id);
+    QSqlTableModel* setModel(int id);
+    QSqlQueryModel* setDatasModel();
+    struct info getInfo(int id = ex_id);
     QList<QString> getGroupList();
 
 signals:

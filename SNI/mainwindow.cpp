@@ -34,7 +34,7 @@ void MainWindow::getInfo()
 {
     //获取教师信息
     info sc_info = net->getInfo();
-    ui->label_name_2->setText(sc_info.name);
+    ui->label_name->setText(sc_info.name);
     ui->label_sign->setText(sc_info.sign);
     if(sc_info.image.size() == 0)
     {
@@ -126,7 +126,8 @@ void MainWindow::slot_style_3()
 
 void MainWindow::slot_viewAll()
 {
-
+    AllStuScore* AST = new AllStuScore(nullptr,net);
+    AST->show();
 }
 
 void MainWindow::slot_about()
@@ -169,6 +170,31 @@ void MainWindow::slot_updateIcon(QPixmap catureImage, QString format)
     }
 }
 
+void MainWindow::slot_changeSign()
+{
+    le_sign = new QLineEdit(this);
+    connect(le_sign,SIGNAL(editingFinished()),this,SLOT(slot_updateSign()));
+    le_sign->setGeometry(65,35,165,20);
+    le_sign->show();
+    le_sign->setText(ui->label_sign->text());
+    le_sign->selectAll();
+    le_sign->setFocus();
+}
+
+void MainWindow::slot_updateSign()
+{
+    QString sign = le_sign->text();
+    le_sign->hide();
+    if(net->updateSign(sign))
+    {
+        this->ui->label_sign->setText(sign);
+    }
+    else
+    {
+        QMessageBox::warning(this,"错误","数据传输出现错误！请检查网络连接后重试！");
+    }
+}
+
 void MainWindow::initMenu()
 {
     settingMenu = new QMenu();
@@ -181,6 +207,7 @@ void MainWindow::initMenu()
     QAction* viewAll = new QAction("查看所有学生成绩",this);
     QAction* about = new QAction("关于",this);
     QAction* changeIcon = new QAction("修改头像",this);
+    QAction* changeSign = new QAction("修改签名",this);
     t_style->addAction(style_1);
     t_style->addAction(style_2);
     t_style->addAction(style_3);
@@ -190,15 +217,23 @@ void MainWindow::initMenu()
     settingMenu->addAction(about);
 
     iconMenu->addAction(changeIcon);
+    iconMenu->addAction(changeSign);
 
     //添加到按钮
     ui->pushButton_menu->setMenu(settingMenu);
     ui->toolButton_icon->setMenu(iconMenu);
     ui->toolButton_icon->setPopupMode(QToolButton::InstantPopup);
 
+    //隐藏三角
+    ui->toolButton_icon->setStyleSheet("QToolButton::menu-indicator{image:none;}");
+    //传值
+    ui->studentList->setNetwork(net);
+
     //信号和槽
     connect(style_1,SIGNAL(triggered()),this,SLOT(slot_style_1()));
     connect(style_2,SIGNAL(triggered()),this,SLOT(slot_style_2()));
     connect(style_3,SIGNAL(triggered()),this,SLOT(slot_style_3()));
     connect(changeIcon,SIGNAL(triggered()),this,SLOT(slot_changeIcon()));
+    connect(viewAll,SIGNAL(triggered()),this,SLOT(slot_viewAll()));
+    connect(changeSign,SIGNAL(triggered()),this,SLOT(slot_changeSign()));
 }

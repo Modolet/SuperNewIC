@@ -56,6 +56,7 @@ struct info{
     QString sign;
     QByteArray image;
     QString format;
+    int score;
 };
 //学生信息结构体
 struct studentInfo{

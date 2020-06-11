@@ -13,8 +13,8 @@ public:
     explicit StudentListBuddy(QWidget *parent = nullptr);
     void initUi();//初始化UI
     QLabel  *name;//姓名
+    QLabel  *id;//id
     QLabel  *sign;//签名
-    int id;  //学生的id
     QString sex;//性别
     QString classroom;//班级
 

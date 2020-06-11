@@ -9,6 +9,9 @@
 #include <QFile>
 #include <QString>
 #include "const.h"
+#include "studentexperimentalresult.h"
+#include "mainwindow.h"
+#include "network.h"
 
 class StudentList : public QListWidget
 {
@@ -26,6 +29,10 @@ public:
     QMap<QListWidgetItem*,bool> isHideMap;//用来判断该组是否隐藏了
     QLineEdit *groupNameEdit;//组的名字，重命名的时候需要用到
     QListWidgetItem *currentItem;//当前的项
+    void setNetwork(network* net);
+private:
+    network* net;
+    int id;
 
 signals:
 
@@ -37,6 +44,7 @@ public slots:
     void slotRenameEditFshed();//命名完成
     void slot_addStudent();//测试用，添加学生
     void addStudent(studentInfo stuInfo);//添加学生
+    void slotViewScore();
 };
 
 #endif // STUDENTLIST_H

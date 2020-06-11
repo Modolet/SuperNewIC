@@ -6,6 +6,7 @@
 #include "changepasswd.h"
 #include "const.h"
 #include "mainwindow.h"
+#include "stu_mainwindow.h"
 
 extern int ex_id;
 namespace Ui {

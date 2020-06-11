@@ -1,19 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Test</class>
- <widget class="QWidget" name="Test">
+ <class>Stu_AccessPort</class>
+ <widget class="QWidget" name="Stu_AccessPort">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>626</width>
-    <height>503</height>
+    <width>599</width>
+    <height>496</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>串口调试专用</string>
+   <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
+   <item row="0" column="0">
+    <widget class="QPlainTextEdit" name="plainTextEdit_receiveDisplay">
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
    <item row="0" column="1">
     <widget class="QWidget" name="widget" native="true">
      <layout class="QGridLayout" name="gridLayout">
@@ -46,8 +53,11 @@
       </item>
       <item row="2" column="1">
        <widget class="QComboBox" name="comboBox_baudRate">
+        <property name="currentText">
+         <string>4800</string>
+        </property>
         <property name="currentIndex">
-         <number>3</number>
+         <number>2</number>
         </property>
         <item>
          <property name="text">
@@ -308,9 +318,6 @@
       </item>
      </layout>
     </widget>
-   </item>
-   <item row="0" column="0">
-    <widget class="QPlainTextEdit" name="plainTextEdit_receiveDisplay"/>
    </item>
   </layout>
  </widget>

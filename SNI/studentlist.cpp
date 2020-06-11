@@ -28,6 +28,12 @@ void StudentList::initMenu()
     studentMenu->addAction(viewScore);
     //信息槽
     connect(groupNameEdit,SIGNAL(editingFinished()),this,SLOT(slotRenameEditFshed()));
+    connect(viewScore,SIGNAL(triggered()),this,SLOT(slotViewScore()));
+}
+
+void StudentList::setNetwork(network *net)
+{
+    this->net = net;
 }
 
 //添加学生，测试用
@@ -35,7 +41,7 @@ void StudentList::slot_addStudent()
 {
     StudentListBuddy *buddy=new StudentListBuddy();   //创建一个自己定义的信息类
     buddy->name->setText("Modolet");                  //设置用户名
-    buddy->sign->setText("刘震没我帅。");   //设置个性签名
+    buddy->id->setText("刘震没我帅。");   //设置个性签名
     QList<QListWidgetItem*> tem = groupMap.keys(currentItem);//当前组对应的项（包括组本身和好友）复制给tem
     //关键代码
     QListWidgetItem *newItem = new QListWidgetItem();       //创建一个newItem
@@ -53,8 +59,8 @@ void StudentList::addStudent(studentInfo stuInfo)
     //创建一个自己定义的信息类
     StudentListBuddy *buddy = new StudentListBuddy();
     buddy->name->setText(stuInfo.name);
-    buddy->sign->setText(QString("%1 %2").arg(stuInfo.id).arg(stuInfo.sign));
-    buddy->id = stuInfo.id;
+    buddy->id->setText(QString("%1").arg(stuInfo.id));
+    buddy->sign->setText(stuInfo.sign);
     buddy->classroom = stuInfo.classroom;
     buddy->sex = stuInfo.sex;
     //找到对应的组，并设置为currentItem
@@ -75,6 +81,13 @@ void StudentList::addStudent(studentInfo stuInfo)
         newItem->setHidden(true);
     else                                      //否则，该好友设置为显示
         newItem->setHidden(false);
+}
+
+void StudentList::slotViewScore()
+{
+    StudentExperimentalResult* m_SER;
+    m_SER = new StudentExperimentalResult(this,net,id);
+    m_SER->show();
 }
 
 //鼠标点击事件
@@ -128,7 +141,13 @@ void StudentList::contextMenuEvent(QContextMenuEvent *event)
     if(currentItem == groupMap.value(currentItem))
         groupMenu->exec(QCursor::pos());
     else                                                                    //否则点击到的是好友
+    {
+        QWidget* pwig = this->itemWidget(currentItem);
+        QList<QLabel*> label = pwig->findChildren<QLabel*>();
+        id = label[1]->text().toInt();
         studentMenu->exec(QCursor::pos());
+    }
+
 }
 
 //添加组

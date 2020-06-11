@@ -1,27 +1,30 @@
-#ifndef TEST_H
-#define TEST_H
+#ifndef STU_ACCESSPORT_H
+#define STU_ACCESSPORT_H
 
 #include <QWidget>
 #include <QSerialPort>
 #include <QSerialPortInfo>
+#include <QtMath>
+#include <QMessageBox>
 #include <QDebug>
 
+
 namespace Ui {
-class Test;
+class Stu_AccessPort;
 }
 
-class Test : public QWidget
+class Stu_AccessPort : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit Test(QWidget *parent = nullptr);
-    ~Test();
+    explicit Stu_AccessPort(QWidget *parent = nullptr);
+    ~Stu_AccessPort();
 
     void mainWinSend(QByteArray str);
 
 signals:
-    void testDone(double, double, double, double, double);          // 每一组测量完成的信号
+    void testDone(double, double, double);          // 每一组测量完成的信号
 
 public slots:
     void slot_singleTest();                 // 单次测量槽函数
@@ -53,10 +56,21 @@ private slots:
 public:
     bool isMainWindowUse = true;    // 用作是否主窗口用的标识
     bool isSingletest = true;       // 用作是否单次测量的标识
+    bool isStop = false;
 
 private:
-    Ui::Test *ui;
+    Ui::Stu_AccessPort *ui;
     QSerialPort serial;             // 全局串口对象
+    QByteArray data[16] = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"};
+    QByteArray vis;
+    int index[6] = {0};
+    int time = 0;
+    QByteArray circuitCur;
+    bool isR0 = true;
+    double R0, R01, Rx;
+    bool adjustCircut = true;
+
+    int k = 0;
 
 
 private:
@@ -65,4 +79,4 @@ private:
     void signalsToSlots();          // 把信号和槽函数连接起来
 };
 
-#endif // TEST_H
+#endif // STU_ACCESSPORT_H

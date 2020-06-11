@@ -75,12 +75,23 @@ void Login::AutoLogin() {
     sc_TEALogin.userID = ui->lineEdit_username->text().toInt();
     strcpy(sc_TEALogin.userPWD,
            ui->lineEdit_password->text().toStdString().c_str());
+
     if (net->Login(sc_TEALogin)) {
+        if(net->is_teacher(sc_TEALogin.userID))
+        {
         ex_id = sc_TEALogin.userID;
         mainwindow = new MainWindow(NULL, net);
         this->close();
         mainwindow->show();
         mainwindow->setWindowTitle("超新芯");
+        }
+        else
+        {
+            ex_id = sc_TEALogin.userID;
+            Stu_MainWindow* stu = new Stu_MainWindow(nullptr);
+            this->close();
+            stu->show();
+        }
 
     } else {
         QMessageBox::information(this, "错误", "账号或密码错误");

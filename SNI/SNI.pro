@@ -1,6 +1,7 @@
 QT       += core gui
-QT       += serialport
+QT       += network
 QT       += sql
+QT       += serialport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -18,21 +19,58 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    allstuscore.cpp \
+    changepasswd.cpp \
+    changeusericon.cpp \
+    login.cpp \
     main.cpp \
     mainwindow.cpp \
-    tableview.cpp \
-    test.cpp
+    network.cpp \
+    stu_accessport.cpp \
+    stu_mainwindow.cpp \
+    stu_sqlmodel.cpp \
+    studentexperimentalresult.cpp \
+    studentlist.cpp \
+    studentlistbuddy.cpp
 
 HEADERS += \
+    allstuscore.h \
+    changepasswd.h \
+    changeusericon.h \
+    const.h \
+    login.h \
     mainwindow.h \
-    tableview.h \
-    test.h
+    network.h \
+    stu_accessport.h \
+    stu_mainwindow.h \
+    stu_sqlmodel.h \
+    studentexperimentalresult.h \
+    studentlist.h \
+    studentlistbuddy.h
 
 FORMS += \
+    allstuscore.ui \
+    changepasswd.ui \
+    changeusericon.ui \
+    login.ui \
     mainwindow.ui \
-    test.ui
+    stu_accessport.ui \
+    stu_mainwindow.ui \
+    studentexperimentalresult.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    icon.qrc \
+    qss.qrc
+
+RC_ICONS = "ICON.ico"
+RC_LANG = 0x0004
+VERSION = 0.8.0.1
+QMAKE_TARGET_PRODUCT="超新芯"
+QMAKE_TARGET_COMPANY="超新芯团队"
+QMAKE_TARGET_DESCRIPTION="超新芯管理软件"
+QMAKE_TARGET_COPYRIGHT="Copyright  2020 超新芯团队 All rights reserved"

@@ -15,6 +15,7 @@
 #include "const.h"
 #include "network.h"
 #include "changeusericon.h"
+#include "allstuscore.h"
 
 extern int ex_id;
 
@@ -29,6 +30,7 @@ class MainWindow : public QMainWindow {
     Q_OBJECT
 
 public:
+    network* net;
     MainWindow(QWidget* parent = nullptr, network* net = 0);
     ~MainWindow();
 
@@ -43,11 +45,12 @@ private slots:
     void slot_about();
     void slot_changeIcon();
     void slot_updateIcon(QPixmap catureImage,QString format);
+    void slot_changeSign();
+    void slot_updateSign();
 
 
 private:
     Ui::MainWindow* ui;
-    network* net;
     QIcon* icon;
     QFile* theme;
     void initMenu();//初始化菜单
@@ -57,6 +60,8 @@ private:
     QMenu* iconMenu;
     QMenu* t_style;//二级菜单：主题
     QMenu* settingMenu;
+    //编辑
+    QLineEdit* le_sign;
 
 };
 #endif  // MAINWINDOW_H
