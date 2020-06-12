@@ -69,8 +69,8 @@ RESOURCES += \
 
 RC_ICONS = "ICON.ico"
 RC_LANG = 0x0004
-VERSION = 0.8.0.2
+VERSION = 0.8.0.3
 QMAKE_TARGET_PRODUCT="超新芯"
 QMAKE_TARGET_COMPANY="超新芯团队"
 QMAKE_TARGET_DESCRIPTION="超新芯管理软件"
-QMAKE_TARGET_COPYRIGHT="Copyright  2020 超新芯团队 All rights reserved"
+QMAKE_TARGET_COPYRIGHT="Copyright  2020 超新芯团队 All Rights Reserved"
