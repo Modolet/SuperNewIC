@@ -63,12 +63,11 @@ void Stu_MainWindow::on_pushButton_testSpecific_clicked()
     testWin.show();                                                 // 显示测试窗口
 }
 
-void Stu_MainWindow::on_pushButton_startTest_clicked()                  // 判断单次测量还是多测测量
+void Stu_MainWindow::on_pushButton_startTest_clicked()              // 判断单次测量还是多测测量
 {
     testWin.isMainWindowUse = true;
     ui->radioButton_singleTest->setEnabled(false);                  // 开始单次测量后，就不能在的选择测量模式知道测量完毕
     ui->radioButton_repeatTest->setEnabled(false);                  // 多次测量的选项消除使能
-
     if(ui->radioButton_singleTest->isChecked())                     // 如果单次测量被选中
     {
         testWin.isSingletest = true;                                // 把单次测量的标识设置为真
@@ -87,6 +86,7 @@ void Stu_MainWindow::upDataToTableView(double R0, double R01, double Rx)// 向�
     ui->radioButton_singleTest->setEnabled(true);                   // 单次测量的选项恢复使能
     ui->radioButton_repeatTest->setEnabled(true);                   // 多次测量的选项回复使能
     get_average_variance_standardVariance();                        // 获得了一条数据重新计算均值和方差
+    sqlTableMoedl->model->submitAll();                              // 提交
 }
 
 void Stu_MainWindow::on_pushButton_stopTest_clicked()
@@ -104,7 +104,7 @@ void Stu_MainWindow::on_pushButton_deleteData_clicked()                 // 删�
     sqlTableMoedl->model->submitAll();                              // 提交删除
 }
 
-void Stu_MainWindow::on_pushButton_clearAll_clicked()                   // 清除所有测得的所有数据
+void Stu_MainWindow::on_pushButton_clearAll_clicked()               // 清除所有测得的所有数据
 {
     int lastRow = sqlTableMoedl->model->rowCount();                 // 获取表中最后一行
     for(int i = lastRow - 1; i >= 0; i--)                           // 从第一行删除到最后一行
@@ -113,7 +113,7 @@ void Stu_MainWindow::on_pushButton_clearAll_clicked()                   // 清�
     sqlTableMoedl->model->submitAll();                              // 提交删除
 }
 
-void Stu_MainWindow::get_average_variance_standardVariance()                        // 计算均值和方差
+void Stu_MainWindow::get_average_variance_standardVariance()                    // 计算均值和方差
 {
     double average = 0, variance = 0, standardVariance = 0;
     int rows = sqlTableMoedl->model->rowCount();                                // 获取总行数
@@ -123,7 +123,7 @@ void Stu_MainWindow::get_average_variance_standardVariance()                    
         {
             average += sqlTableMoedl->model->record(i).value("Rx").toDouble();
             QSqlRecord record = sqlTableMoedl->model->record(i);
-            record.setValue("试验次数", i + 1);
+            record.setValue("实验次数", i + 1);
             sqlTableMoedl->model->setRecord(i, record);
         }
         average = average / rows;                                               // 获得均值

@@ -29,7 +29,7 @@ void Stu_AccessPort::signalsToSlots()             // 把信号和槽函数连接
     connect(&serial, &QSerialPort::readyRead, this, &Stu_AccessPort::slot_repeatTest);
 }
 
-void Stu_AccessPort::findSerial()                 // 查找计算机可用串口
+void Stu_AccessPort::findSerial()                 // 查找计算机可用串口，并生成列表放在ui界面的串口选择下拉框
 {
     foreach(const QSerialPortInfo &info,QSerialPortInfo::availablePorts())
     {
@@ -43,7 +43,7 @@ void Stu_AccessPort::findSerial()                 // 查找计算机可用串口
     }
 }
 
-void Stu_AccessPort::initSerials()                                                // 初始化串口
+void Stu_AccessPort::initSerials()                                      // 初始化串口
 {
     serial.setPortName(ui->comboBox_serialSelect->currentText());       // 设置串口名
     serial.setBaudRate(ui->comboBox_baudRate->currentText().toInt());   // 设置波特率
@@ -57,13 +57,13 @@ void Stu_AccessPort::initSerials()                                              
 // 如果串口当前选择端口名改变，串口端口名设置为改变后的值
 void Stu_AccessPort::on_comboBox_serialSelect_currentIndexChanged(int index)
 {
-    index++;            // 没有用
+    index++;            // 这里index用不到，只是想避免警告
     serial.setPortName(ui->comboBox_serialSelect->currentText());
 }
 // 如果串口当前选择波特率改变，串口波特率设置为改变后的值
 void Stu_AccessPort::on_comboBox_baudRate_currentIndexChanged(int index)
 {
-    index++;
+    index++;            // 这里index用不到，只是想避免警告
     serial.setBaudRate(ui->comboBox_baudRate->currentText().toInt());
 }
 
@@ -175,109 +175,41 @@ void Stu_AccessPort::mainWinSend(QByteArray data)
     serial.write(data);
 }
 
-
-// 单次测量
-/*
-void Test::slot_singleTest()
-{
-    if(isMainWindowUse && isSingletest)
-    {
-        int now = time % 3;                         // 获得当前一组数据的第几次发送数据
-        QByteArray dataOfSend = data[index[now]] + data[index[now + 1]];    // 获得当前要发送的数据
-        vis1 = serial.readAll();                    // 从串口读取数据放在vis1中
-        if(time % 3 == 0 && time != 0)
-        {
-            if(time == 3)
-                vis2 = vis1;            // 获得第一组测量数据的电桥状态
-            if(vis2 != vis1)            // 获得每组第三次收到的数据与第一组的数据进行比较判断电桥是否平衡
-            {
-                if(isR0)
-                {
-                    R0 = 1;
-                    isR0 = false;
-                }
-                else
-                {
-                    R01 = 1;
-                    double Rx = 1;
-                    emit testDone(R0, R01, Rx);       // 把一次测量的一组数据发送给主窗口数据展示区域
-                    time = 0;
-                }
-
-                index[2] = 0; index[3] = 0; index[4] = 0; index[5] = 0;
-
-                index[1]++;             // 电路状态换一次
-                if(index[1] >= 0)
-                {
-                    index[1] = 0;
-                    index[0]++;
-                    if(index[0] >= 16)
-                    {
-                        QMessageBox::warning(this, "error", "电路一直未平衡");
-                        return;
-                    }
-                }
-                return;
-            }
-            index[5]++;
-            if(index[5] >= 16)
-            {
-                index[5] = 0;
-                index[4]++;
-                if(index[4] >= 16)
-                {
-                    index[4] = 0;
-                    index[3]++;
-                    if(index[3] >= 16)
-                    {
-                        index[3] = 0;
-                        index[2]++;
-                        if(index[2] >= 16)
-                        {
-                            QMessageBox::warning(this, "error", "电桥一直未平衡");
-                            return;
-                        }
-                    }
-                }
-            }
-        }
-        serial.write(dataOfSend);
-    }
-}
-*/
-
 // 单次测量
 void Stu_AccessPort::slot_singleTest()
 {
     if(isMainWindowUse && isSingletest)
     {
-        int now = time % 3;                         // 获得当前一组数据的第几次发送数据
-        vis = serial.readAll();                     // 从串口读取数据放在vis1中
+        int now = (time % 3) * 2;                           // 获得当前一组数据的第几次发送数据
+        vis = serial.readAll();                             // 从串口读取数据放在vis1中
         if(time % 3 == 0)
         {
             if(vis == "01")
             {
-                index[0] = index[0] + 0x2;           // 电桥反转 +0010
-                time = 6;
+                index[0] = index[0] + 0x2;                  // 电桥反转 +0010
 
                 if((index[0]>>2)&1)
                 {
-                    // R01 = index[0]......;
+                    R01 = getR0(index[0], index[1], index[2], index[3], index[4], index[5]);
+                    R01 = 10 / (1 - R01 / pow(2, 16));          // 计算R0的公式
                     emit  testDone(R0, R01, sqrt(R0 * R01));
-                    time = 0;
+                    circuitReset();                             // 电路参数归零
+                    return;
                 }
                 else
-                // R0 = index[0]......;
-                    ;
-                for(int i = 1; i < 6; i++)          // 一次测量完成后，控制R0的数值全部归零
+                {
+                    R0 = getR0(index[0], index[1], index[2], index[3], index[4], index[5]);
+                    R0 = 10 / (1 - R0 / pow(2, 16));
+                }
+                for(int i = 1; i < 6; i++)              // 一次测量完成后，控制R0的数值全部归零
                     index[i] = 0;
             }
             else if(time == 3)
-                index[0] += 4;           // 0100
+                index[0] += 0x4;                    // 0100
             else
             {
                 index[5] += 2;
-                for(int i = 5; i > 0; i++)
+                for(int i = 5; i > 0; i--)
                     if(index[i] >= 16)
                     {
                         index[i] = 0;
@@ -285,7 +217,7 @@ void Stu_AccessPort::slot_singleTest()
                     }
                 if(index[0]&1 && index[1] == 15 && index[2] == 15 && index[3] == 15 && index[4] == 15 && index[5] == 15)    // 0001 1111   1111
                 {
-                    QMessageBox::warning(this, "提示", "电桥一直未平衡！");
+                    QMessageBox::information(this, "提示", "电桥一直未平衡！");
                     return ;
                 }
             }
@@ -299,65 +231,31 @@ void Stu_AccessPort::slot_singleTest()
     }
 }
 
-
-
-
 // 多次测量
 void Stu_AccessPort::slot_repeatTest()
 {
-    /*
-    if(isMainWindowUse && !isSingletest)
-    {
-        firstData = data[i1] + data[i2];
-        vis1 = serial.readAll();       // 从串口读取数据放在vis1中
-        if(time % 3 == 0 && time != 0)
-        {
-            if(time == 3)
-                vis2 = vis1;            // 获得第一组测量数据的电桥状态
-            if(vis2 != vis1)            // 获得每组第三次收到的数据与第一组的数据进行比较判断电桥是否平衡
-            {
-                emit testDone(R0, R01, R1, R2, Rx);       // 把一次测量的一组数据发送给主窗口数据展示区域
-                return;
-            }
-        }
-        switch(time % 3)
-        {
-            case 0:
-                serial.write(firstData);
-                i2++;
-                if(i2 >= 16)
-                {
-                    i2 = 0;
-                    i1++;
-                }
-                break;
-            case 1:
-                serial.write(firstData);
-                k2++;
-                if(k2 >= 16)
-                {
-                    k2 = 0;
-                    k1++;
-                }
-                break;
-            case 2:
-                serial.write(firstData);
-                j2++;
-                if(j2 >= 16)
-                {
-                    j2 = 0;
-                    j1++;
-                }
-                break;
-        }
-
-        vis1.clear();
-        time++;
-    }
-    */
 
 }
 
+// 电桥平衡时，把控制R0的那20位二进制串转化为十进制数
+int Stu_AccessPort::getR0(int i0, int i1, int i2, int i3, int i4, int i5)
+{
+    QString str_16 = QString::number(i0, 16) + QString::number(i1, 16) + QString::number(i2, 16) + QString::number(i3, 16) + QString::number(i4, 16) + QString::number(i5, 16);
+    int int_10 = str_16.toInt(NULL, 16);                   // 十六进制字符串转为十进制数。如2b5f67H->2842471
+    QString str_2 = QString::number(int_10, 2);            // 十进制数转为二进制串，如2842471->"1010110101111101100111"
+    QString str_2_eff = str_2.mid(str_2.length()-21, 20);  // 截取控制R0的那20位二进制串，即倒数21位到倒数第1位之间的长度，如"1010110101111101100111"->"01011010111110110011"
+    int int_10_eff = str_2_eff.toInt(NULL, 2);             // 把那20位二进制串转化为10进制数，如"01011010111110110011"->372659
+    return int_10_eff;
+}
+
+// 电路参数归零
+void Stu_AccessPort::circuitReset()
+{
+    time = 0;
+    for(int i = 0; i < 6; i++)          // 一次测量完成后，控制R0的数值全部归零
+        index[i] = 0;
+    vis.clear();
+}
 
 
 /*
@@ -376,9 +274,9 @@ void Stu_AccessPort::slot_repeatTest()
 
 *********************************************************************************************************
             单次测量：（单次测量可以不用调节数字电位器，即第1，2位，假定发00），继电器选择一种连接模式
-0010000 	00000000		000000000	采集此时收回的数据（前两次发送数据后读取的数据需要丢弃）
-0010000		00000000		000000010	采集此时收回的数据
-0010000		00000000		000000100	采集此时收回的数据
+00100000 	00000000		000000000	采集此时收回的数据（前两次发送数据后读取的数据需要丢弃）
+00100000	00000000		000000010	采集此时收回的数据
+00100000	00000000		000000100	采集此时收回的数据
         .
         .
 直到收回数据01（标志位）（01ox代表电桥平衡，00ox代表电桥非平衡）

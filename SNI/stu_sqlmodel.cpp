@@ -3,7 +3,6 @@
 Stu_SqlModel::Stu_SqlModel(QObject *parent) : QObject(parent)
 {
     openMysql();        // 打开数据库
-
 }
 
 Stu_SqlModel::~Stu_SqlModel()
@@ -27,9 +26,8 @@ void Stu_SqlModel::openMysql()
 
     query = QSqlQuery(db);                        // 获取当前使用的数据库
 
-    //db.setUserName("students");                     // 以学生的权限访问
     model = new QSqlTableModel(this);
-    model->setTable(QString::number(1911101));     // 连接到该学生使用的表
+    model->setTable(QString::number(ex_id));     // 连接到该学生使用的表
     model->select();                             // 显示tableModel数据
 
     model->setEditStrategy(QSqlTableModel::OnManualSubmit); // 设置手动提交修改
@@ -53,7 +51,7 @@ void Stu_SqlModel::putModelToTableView()
 // 向数据库插入一条记录,并在主窗口的表格里面显示出来，如果要上传至数据库需要手动提交或者在析构函数中提交。
 void Stu_SqlModel::MainWin_addRecordToTable(double R0, double R01, double Rx)
 {
-    qDebug() << "R0:" << R0 << " R01:" << R01 << " Rx:" << Rx;
+    // qDebug() << "R0:" << R0 << " R01:" << R01 << " Rx:" << Rx;
     QSqlRecord record = model->record();       // 获得表格一条空记录
     record.setValue("R0", R0);
     record.setValue("R0'", R01);

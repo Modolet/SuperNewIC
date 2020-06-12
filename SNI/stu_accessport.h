@@ -65,18 +65,14 @@ private:
     QByteArray vis;
     int index[6] = {0};
     int time = 0;
-    QByteArray circuitCur;
-    bool isR0 = true;
-    double R0, R01, Rx;
-    bool adjustCircut = true;
-
-    int k = 0;
-
+    double R0 = 0, R01 = 0, Rx = 0;
 
 private:
-    void findSerial();              // 查找计算机可用串口
-    void initSerials();             // 初始化串口，全部默认
-    void signalsToSlots();          // 把信号和槽函数连接起来
+    void findSerial();                          // 查找计算机可用串口
+    void initSerials();                         // 初始化串口，全部默认
+    void signalsToSlots();                      // 把信号和槽函数连接起来
+    int getR0(int, int, int, int, int, int);    // 把控制R0的20位二进制代码转为十进制
+    void circuitReset();                        // 参数归零
 };
 
 #endif // STU_ACCESSPORT_H
