@@ -1,4 +1,4 @@
-#include "changeusericon.h"
+﻿#include "changeusericon.h"
 #include "ui_changeusericon.h"
 
 // 矩形选中区边框宽度;
@@ -322,6 +322,7 @@ void ChangeUserIcon::paintEvent(QPaintEvent *event)
     }
 
     m_painter.end();  //重绘结束;
+    return QWidget::paintEvent(event);
 }
 
 // 根据当前截取状态获取当前选中的截图区域;

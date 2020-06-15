@@ -5,6 +5,8 @@ QT       += serialport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+
+
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
@@ -12,7 +14,6 @@ CONFIG += c++11
 # depend on your compiler). Please consult the documentation of the
 # deprecated API in order to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
-
 # You can also make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
@@ -22,6 +23,7 @@ SOURCES += \
     allstuscore.cpp \
     changepasswd.cpp \
     changeusericon.cpp \
+    first.cpp \
     login.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -38,6 +40,7 @@ HEADERS += \
     changepasswd.h \
     changeusericon.h \
     const.h \
+    first.h \
     login.h \
     mainwindow.h \
     network.h \
@@ -52,6 +55,7 @@ FORMS += \
     allstuscore.ui \
     changepasswd.ui \
     changeusericon.ui \
+    first.ui \
     login.ui \
     mainwindow.ui \
     stu_accessport.ui \
@@ -69,8 +73,8 @@ RESOURCES += \
 
 RC_ICONS = "ICON.ico"
 RC_LANG = 0x0004
-VERSION = 0.8.0.3
-QMAKE_TARGET_PRODUCT="³¬ĞÂĞ¾"
-QMAKE_TARGET_COMPANY="³¬ĞÂĞ¾ÍÅ¶Ó"
-QMAKE_TARGET_DESCRIPTION="³¬ĞÂĞ¾¹ÜÀíÈí¼ş"
-QMAKE_TARGET_COPYRIGHT="Copyright  2020 ³¬ĞÂĞ¾ÍÅ¶Ó All Rights Reserved"
+VERSION = 0.9.0.0
+QMAKE_TARGET_PRODUCT="è¶…æ–°èŠ¯"
+QMAKE_TARGET_COMPANY="è¶…æ–°èŠ¯å›¢é˜Ÿ"
+QMAKE_TARGET_DESCRIPTION="è¶…æ–°èŠ¯ç®¡ç†è½¯ä»¶"
+QMAKE_TARGET_COPYRIGHT="Copyright Â© 2020 è¶…æ–°èŠ¯å›¢é˜Ÿ All Rights Reserved"

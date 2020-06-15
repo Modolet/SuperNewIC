@@ -1,5 +1,9 @@
-#ifndef STUDENTLIST_H
+﻿#ifndef STUDENTLIST_H
 #define STUDENTLIST_H
+
+#if _MSC_VER >= 1600	// MSVC2015 > 1899,	MSVC_VER = 14.0
+#pragma execution_character_set("utf-8")
+#endif
 
 #include <QObject>
 #include <QListWidget>
@@ -29,9 +33,9 @@ public:
     QMap<QListWidgetItem*,bool> isHideMap;//用来判断该组是否隐藏了
     QLineEdit *groupNameEdit;//组的名字，重命名的时候需要用到
     QListWidgetItem *currentItem;//当前的项
-    void setNetwork(network* net);
+    void setNetwork(Network* net);
 private:
-    network* net;
+    Network* net;
     int id;
 
 signals:

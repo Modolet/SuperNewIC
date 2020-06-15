@@ -1,4 +1,4 @@
-#include "login.h"
+﻿#include "login.h"
 
 #include <string.h>
 
@@ -19,10 +19,11 @@ Login::Login(QWidget *parent) : QMainWindow(parent), ui(new Ui::Login) {
     this->setFixedSize(this->width(), this->height());  //固定窗口大小
     this->setWindowTitle("登录");                       //窗口标题
     sc_loginData = {0};                                 //初始化登录数据
-    net = new network;
+    net = new Network;
 
     //下面是信号和槽==============================================================================
-    connect(this, SIGNAL(signal_login()), this, SLOT(on_autoLogin()));
+    connect(this, &Login::signal_login, this, &Login::on_autoLogin);
+    connect(net->socket,&QTcpSocket::errorOccurred,this,&Login::NetErr);
 
     SetUerEdit();  //读取并初始化界面
     this->show();
@@ -71,31 +72,17 @@ void Login::WriteLoginData() {
 }
 
 void Login::AutoLogin() {
-    struct TEALogin sc_TEALogin;
     sc_TEALogin.userID = ui->lineEdit_username->text().toInt();
-    strcpy(sc_TEALogin.userPWD,
+    strcpy_s(sc_TEALogin.userPWD,
            ui->lineEdit_password->text().toStdString().c_str());
-
-    if (net->Login(sc_TEALogin)) {
-        if(net->is_teacher(sc_TEALogin.userID))
-        {
-        ex_id = sc_TEALogin.userID;
-        mainwindow = new MainWindow(NULL, net);
-        this->close();
-        mainwindow->show();
-        mainwindow->setWindowTitle("超新芯");
-        }
-        else
-        {
-            ex_id = sc_TEALogin.userID;
-            Stu_MainWindow* stu = new Stu_MainWindow(nullptr);
-            this->close();
-            stu->show();
-        }
-
-    } else {
-        QMessageBox::information(this, "错误", "账号或密码错误");
+    net->sendMsg(QString("xyxyxc#%1#ID:_d_%2_d_xyxyxcend").arg(e_IsHave).arg(QString::number(sc_TEALogin.userID)));
+    if(net->IsHave())
+    {
+        net->sendMsg(QString("xyxyxc#%1#ID:_d_%2_d_xyxyxcend").arg(e_IsReg).arg(QString::number(sc_TEALogin.userID)));
+        login(net->IsReg());
     }
+    else
+        QMessageBox::warning(this,"警告","账号不存在！");
 }
 
 void Login::SetUerEdit() {
@@ -110,6 +97,47 @@ void Login::SetUerEdit() {
     if (ui->checkBox_rememberPwd->isChecked())    //选择读取密码
         ui->lineEdit_password->setText(sc_loginData.userPWD);
     return;
+}
+
+void Login::NetErr()
+{
+    QMessageBox::warning(this,"错误","与服务器的连接出现错误！程序将退出");
+    exit(-1);
+}
+
+void Login::login(bool is_reg)
+{
+    if(is_reg)
+    {
+        if (net->Login(sc_TEALogin)) {
+            if(net->is_teacher(sc_TEALogin.userID))
+            {
+            ex_id = sc_TEALogin.userID;
+            mainwindow = new MainWindow(NULL, net);
+            this->close();
+            mainwindow->show();
+            mainwindow->setWindowTitle("超新芯");
+            }
+            else
+            {
+                ex_id = sc_TEALogin.userID;
+                ex_pwd = sc_TEALogin.userPWD;
+                Stu_MainWindow* stu = new Stu_MainWindow(nullptr);
+                this->close();
+                stu->show();
+            }
+
+        } else {
+            QMessageBox::information(this, "错误", "账号或密码错误");
+        }
+    }
+    else
+    {
+        QMessageBox::information(this,"提示","初次使用，请验证账号！");
+        first = new First(this,sc_TEALogin.userID,net);
+        this->hide();
+        first->show();
+    }
 }
 
 void Login::on_lineEdit_username_textEdited(const QString &arg1) {

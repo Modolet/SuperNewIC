@@ -1,10 +1,12 @@
-#include <QApplication>
+﻿#include <QApplication>
 #include <QDebug>
-
+#include <QString>
 #include "login.h"
 #include "mainwindow.h"
 
 int ex_id;  //全局储存id
+QString ex_pwd; //全局储存密码
+
 int main(int argc, char* argv[]) {
   QApplication a(argc, argv);
 

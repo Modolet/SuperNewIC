@@ -1,5 +1,9 @@
-#ifndef STUDENTEXPERIMENTALRESULT_H
+﻿#ifndef STUDENTEXPERIMENTALRESULT_H
 #define STUDENTEXPERIMENTALRESULT_H
+
+#if _MSC_VER >= 1600	// MSVC2015 > 1899,	MSVC_VER = 14.0
+#pragma execution_character_set("utf-8")
+#endif
 
 #include <QWidget>
 #include <QSqlTableModel>
@@ -16,11 +20,11 @@ class StudentExperimentalResult : public QWidget
     Q_OBJECT
 
 public:
-    explicit StudentExperimentalResult(QWidget *parent = nullptr,network* net = nullptr,int id = 0);
+    explicit StudentExperimentalResult(QWidget *parent = nullptr,Network* net = nullptr,int id = 0);
     ~StudentExperimentalResult();
 
 private:
-    network* net;
+    Network* net;
     int id;
     info sc_stuInfo;
     Ui::StudentExperimentalResult *ui;

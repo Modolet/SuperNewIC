@@ -1,4 +1,4 @@
-#include "studentlist.h"
+﻿#include "studentlist.h"
 #include <QAction>
 #include <QIcon>
 #include <studentlistbuddy.h>
@@ -27,11 +27,11 @@ void StudentList::initMenu()
     //布局
     studentMenu->addAction(viewScore);
     //信息槽
-    connect(groupNameEdit,SIGNAL(editingFinished()),this,SLOT(slotRenameEditFshed()));
-    connect(viewScore,SIGNAL(triggered()),this,SLOT(slotViewScore()));
+    connect(groupNameEdit,&QLineEdit::editingFinished,this,&StudentList::slotRenameEditFshed);
+    connect(viewScore,&QAction::triggered,this,&StudentList::slotViewScore);
 }
 
-void StudentList::setNetwork(network *net)
+void StudentList::setNetwork(Network *net)
 {
     this->net = net;
 }

@@ -1,8 +1,9 @@
-#include "stu_sqlmodel.h"
+﻿#include "stu_sqlmodel.h"
 
-Stu_SqlModel::Stu_SqlModel(QObject *parent) : QObject(parent)
+Stu_SqlModel::Stu_SqlModel(QObject *parent,Network* net) : QObject(parent)
 {
     openMysql();        // 打开数据库
+    this->net = net;
 }
 
 Stu_SqlModel::~Stu_SqlModel()
@@ -13,18 +14,10 @@ Stu_SqlModel::~Stu_SqlModel()
 // 打开数据库
 void Stu_SqlModel::openMysql()
 {
-
-    // 1.创建一个数据库句柄
-    db = QSqlDatabase::addDatabase("QMYSQL");
-
     // 2.连接数据库
-    db.setPort(3306);
-    db.setHostName("sni.modolet.xyz");
-    db.setUserName("students");                     // 以学生的权限访问
-    db.setPassword("metalmax");
-    db.setDatabaseName("students");                 // 打开学生的数据库
+    db =  net->getDB();
 
-    query = QSqlQuery(db);                        // 获取当前使用的数据库
+    query = net->getSQ();                        // 获取当前使用的数据库
 
     model = new QSqlTableModel(this);
     model->setTable(QString::number(ex_id));     // 连接到该学生使用的表

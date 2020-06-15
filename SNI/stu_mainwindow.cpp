@@ -1,11 +1,13 @@
-#include "stu_mainwindow.h"
+﻿#include "stu_mainwindow.h"
 #include "ui_stu_mainwindow.h"
 
-Stu_MainWindow::Stu_MainWindow(QWidget *parent)
+Stu_MainWindow::Stu_MainWindow(QWidget *parent,Network* net)
     : QMainWindow(parent)
     , ui(new Ui::Stu_MainWindow)
 {
     ui->setupUi(this);
+
+    this->net = net;
 
     initMainWindow();                                                   // 初始化窗口
     signalsToSlots();                                                   // 设置信号和槽函数连接
@@ -19,7 +21,7 @@ Stu_MainWindow::~Stu_MainWindow()
 void Stu_MainWindow::signalsToSlots()                                       // 把信号和槽函数连接起来
 {
     // 一次测量结束，把数据上传至数据库
-    connect(&testWin, SIGNAL(testDone(double, double, double)), this, SLOT(upDataToTableView(double, double, double)));
+    connect(&testWin, &Stu_AccessPort::testDone, this, &Stu_MainWindow::upDataToTableView);
 }
 
 void Stu_MainWindow::initMainWindow()                                       // 初始化测试窗口，包含布局等

@@ -1,0 +1,4 @@
+printf '\xEF\xBB\xBF' > SNI_new.pro
+cat SNI.pro >> SNI_new.pro
+rm SNI.pro
+mv SNI_new.pro SNI.pro
