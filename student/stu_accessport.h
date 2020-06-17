@@ -5,6 +5,7 @@
 #include <QSerialPort>
 #include <QSerialPortInfo>
 #include <QtMath>
+#include <QTimer>
 #include <QMessageBox>
 #include <QDebug>
 
@@ -66,6 +67,7 @@ private:
     int index[6] = {0};
     int time = 0;
     double R0 = 0, R01 = 0, Rx = 0;
+    QTimer *timer;                  // 创建一个全局定时器，硬件接收端口数据需要延迟一段时间
 
 private:
     void findSerial();                          // 查找计算机可用串口
