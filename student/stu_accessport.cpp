@@ -7,6 +7,8 @@ Stu_AccessPort::Stu_AccessPort(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    timer = new QTimer(this);
+
     findSerial();               // 获取有用或者闲置端口，并且添加到串口选择下拉框
     initSerials();              // 初始化串口，设置波特率，停止位...
     signalsToSlots();
@@ -21,12 +23,13 @@ Stu_AccessPort::~Stu_AccessPort()
 
 void Stu_AccessPort::signalsToSlots()             // 把信号和槽函数连接起来
 {
+    connect(&serial, &QSerialPort::readyRead, [=](){timer->start(100);});    // 接收硬件来的数据前等待100ms
     // 在测试专用下，一旦串口有数据进来就执行测试窗口的槽函数
-    connect(&serial, &QSerialPort::readyRead, this, &Stu_AccessPort::readData);
+    connect(timer, &QTimer::timeout, this, &Stu_AccessPort::readData);
     // 主窗口进行单次测量的时候，调用单次测量槽函数
-    connect(&serial, &QSerialPort::readyRead, this, &Stu_AccessPort::slot_singleTest);
+    connect(timer, &QTimer::timeout, this, &Stu_AccessPort::slot_singleTest);
     // 主窗口进行单次测量的时候，调用多次测量槽函数
-    connect(&serial, &QSerialPort::readyRead, this, &Stu_AccessPort::slot_repeatTest);
+    connect(timer, &QTimer::timeout, this, &Stu_AccessPort::slot_repeatTest);
 }
 
 void Stu_AccessPort::findSerial()                 // 查找计算机可用串口，并生成列表放在ui界面的串口选择下拉框
@@ -159,6 +162,7 @@ void Stu_AccessPort::readData()
         }
         buf.clear();
     }
+    timer->stop();
 }
 
 
@@ -229,11 +233,13 @@ void Stu_AccessPort::slot_singleTest()
         time++;
         vis.clear();
     }
+    timer->stop();
 }
 
 // 多次测量
 void Stu_AccessPort::slot_repeatTest()
 {
+    timer->stop();
 
 }
 
