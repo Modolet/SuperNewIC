@@ -5,7 +5,7 @@ Network::Network(QObject *parent) : QObject(parent)
     initSql(); 
     code = new QString;
     socket = new QTcpSocket();
-    socket->connectToHost("127.0.0.1",4361);
+    socket->connectToHost(HOST,4361);
 
     if(!connect(socket,&QTcpSocket::readyRead,this,&Network::RecvMsg))
     {

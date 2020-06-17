@@ -12,3 +12,5 @@ SNI/SNI.vcxproj.filters
 SNI/SNI.vcxproj.user
 SNI/SNI_resource*
 *.user
+*.o
+moc_*
