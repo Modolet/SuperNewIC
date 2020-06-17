@@ -1,4 +1,4 @@
-#include "studentlistbuddy.h"
+﻿#include "studentlistbuddy.h"
 #include <QPainter>
 #include <QFont>
 StudentListBuddy::StudentListBuddy(QWidget *parent) : QWidget(parent)

@@ -1,7 +1,7 @@
-#include "changepasswd.h"
+﻿#include "changepasswd.h"
 #include "ui_changepasswd.h"
 #include <QMessageBox>
-changePasswd::changePasswd(QWidget *parent, int id,network* net) :
+changePasswd::changePasswd(QWidget *parent, int id,Network* net) :
     QWidget(parent),
     ui(new Ui::changePasswd)
 {

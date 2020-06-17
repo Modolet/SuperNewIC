@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+﻿#include "mainwindow.h"
 
 #include <QDebug>
 #include <QList>
@@ -11,7 +11,7 @@
 #include <QFileDialog>
 
 #include "ui_mainwindow.h"
-MainWindow::MainWindow(QWidget* parent, network* net)
+MainWindow::MainWindow(QWidget* parent, Network* net)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
     this->setFixedSize(this->width(), this->height());  //固定窗口大小
@@ -24,6 +24,7 @@ MainWindow::MainWindow(QWidget* parent, network* net)
     getInfo();
     //初始化菜单
     initMenu();
+
 
 
 }
@@ -142,9 +143,8 @@ void MainWindow::slot_changeIcon()
         return;
     else
     {
-        Sleep(500);
         ChangeUserIcon* ci = new ChangeUserIcon(this,imgFile);
-        connect(ci,SIGNAL(signalCompleteCature(QPixmap,QString)),this,SLOT(slot_updateIcon(QPixmap,QString)));
+        connect(ci,&ChangeUserIcon::signalCompleteCature,this,&MainWindow::slot_updateIcon);
         ci->show();
 
     }
@@ -173,7 +173,7 @@ void MainWindow::slot_updateIcon(QPixmap catureImage, QString format)
 void MainWindow::slot_changeSign()
 {
     le_sign = new QLineEdit(this);
-    connect(le_sign,SIGNAL(editingFinished()),this,SLOT(slot_updateSign()));
+    connect(le_sign,&QLineEdit::editingFinished,this,&MainWindow::slot_updateSign);
     le_sign->setGeometry(65,35,165,20);
     le_sign->show();
     le_sign->setText(ui->label_sign->text());
@@ -230,10 +230,10 @@ void MainWindow::initMenu()
     ui->studentList->setNetwork(net);
 
     //信号和槽
-    connect(style_1,SIGNAL(triggered()),this,SLOT(slot_style_1()));
-    connect(style_2,SIGNAL(triggered()),this,SLOT(slot_style_2()));
-    connect(style_3,SIGNAL(triggered()),this,SLOT(slot_style_3()));
-    connect(changeIcon,SIGNAL(triggered()),this,SLOT(slot_changeIcon()));
-    connect(viewAll,SIGNAL(triggered()),this,SLOT(slot_viewAll()));
-    connect(changeSign,SIGNAL(triggered()),this,SLOT(slot_changeSign()));
+    connect(style_1,&QAction::triggered,this,&MainWindow::slot_style_1);
+    connect(style_2,&QAction::triggered,this,&MainWindow::slot_style_2);
+    connect(style_3,&QAction::triggered,this,&MainWindow::slot_style_3);
+    connect(changeIcon,&QAction::triggered,this,&MainWindow::slot_changeIcon);
+    connect(viewAll,&QAction::triggered,this,&MainWindow::slot_viewAll);
+    connect(changeSign,&QAction::triggered,this,&MainWindow::slot_changeSign);
 }

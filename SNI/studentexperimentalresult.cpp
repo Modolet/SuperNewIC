@@ -1,7 +1,7 @@
-#include "studentexperimentalresult.h"
+﻿#include "studentexperimentalresult.h"
 #include "ui_studentexperimentalresult.h"
 
-StudentExperimentalResult::StudentExperimentalResult(QWidget *parent,network* net,int id) :
+StudentExperimentalResult::StudentExperimentalResult(QWidget *parent,Network* net,int id) :
     QWidget(parent),
     ui(new Ui::StudentExperimentalResult)
 {

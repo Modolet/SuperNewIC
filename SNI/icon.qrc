@@ -1,4 +1,4 @@
-<RCC>
+﻿<RCC>
     <qresource prefix="/">
         <file>arrowDown</file>
         <file>arrowRight</file>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>Stu_MainWindow</class>
  <widget class="QMainWindow" name="Stu_MainWindow">
@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>656</width>
+    <height>480</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -121,7 +121,7 @@
        </size>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="page_studentInformation">
        <widget class="QWidget" name="widget_3" native="true">
@@ -574,7 +574,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>656</width>
      <height>23</height>
     </rect>
    </property>

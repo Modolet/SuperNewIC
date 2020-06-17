@@ -1,5 +1,9 @@
-#ifndef LOGIN_H
+﻿#ifndef LOGIN_H
 #define LOGIN_H
+
+#if _MSC_VER >= 1600	// MSVC2015 > 1899,	MSVC_VER = 14.0
+#pragma execution_character_set("utf-8")
+#endif
 
 #include <QMainWindow>
 
@@ -7,6 +11,8 @@
 #include "const.h"
 #include "mainwindow.h"
 #include "stu_mainwindow.h"
+#include "first.h"
+#include "network.h"
 
 extern int ex_id;
 namespace Ui {
@@ -45,17 +51,25 @@ private slots:
 
     void on_pushButton_changePasswd_clicked();
 
+    void login(bool);           //登录
+
+    void NetErr();
+
 private:
     Ui::Login* ui;
     struct LoginData sc_loginData;
-    network* net;
+    struct TEALogin sc_TEALogin;
+    Network* net;
     MainWindow* mainwindow;
     changePasswd* cpwd;
+    First* first;
 
     void ReadLoginData();   //读取账号数据
     void WriteLoginData();  //写入账号数据
     void AutoLogin();       //自动登录
     void SetUerEdit();      //自动填充账号栏和密码栏
+
+
 };
 
 #endif  // LOGIN_H

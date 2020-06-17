@@ -1,5 +1,9 @@
-#ifndef MAINWINDOW_H
+﻿#ifndef MAINWINDOW_H
 #define MAINWINDOW_H
+
+#if _MSC_VER >= 1600	// MSVC2015 > 1899,	MSVC_VER = 14.0
+#pragma execution_character_set("utf-8")
+#endif
 
 #include <QList>
 #include <QMainWindow>
@@ -10,7 +14,6 @@
 #include <QMenu>
 #include <QAction>
 #include <QMessageBox>
-#include <synchapi.h>
 
 #include "const.h"
 #include "network.h"
@@ -30,8 +33,8 @@ class MainWindow : public QMainWindow {
     Q_OBJECT
 
 public:
-    network* net;
-    MainWindow(QWidget* parent = nullptr, network* net = 0);
+    Network* net;
+    MainWindow(QWidget* parent = nullptr, Network* net = 0);
     ~MainWindow();
 
 private slots:

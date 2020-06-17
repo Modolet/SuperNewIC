@@ -1,5 +1,9 @@
-#ifndef STU_SQLMODEL_H
+﻿#ifndef STU_SQLMODEL_H
 #define STU_SQLMODEL_H
+
+#if _MSC_VER >= 1600	// MSVC2015 > 1899,	MSVC_VER = 14.0
+#pragma execution_character_set("utf-8")
+#endif
 
 #include <QObject>
 #include <QSqlTableModel>
@@ -14,13 +18,16 @@
 #include <QMessageBox>
 #include <QDebug>
 
+#include "network.h"
+
 extern int ex_id;
+extern QString ex_pwd;
 
 class Stu_SqlModel : public QObject
 {
     Q_OBJECT
 public:
-    explicit Stu_SqlModel(QObject *parent = nullptr);
+    explicit Stu_SqlModel(QObject *parent = nullptr,Network *net = nullptr);
     ~Stu_SqlModel();
 
     void MainWin_addRecordToTable(double, double, double);  // 外部函数向数据库发送记录
@@ -39,6 +46,7 @@ public:
     QSqlTableModel *model;
 
 private:
+    Network* net;
     void openMysql();
     void putModelToTableView();
 };

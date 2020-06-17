@@ -1,7 +1,7 @@
-#include "allstuscore.h"
+﻿#include "allstuscore.h"
 #include "ui_allstuscore.h"
 
-AllStuScore::AllStuScore(QWidget *parent,network* net) :
+AllStuScore::AllStuScore(QWidget *parent,Network* net) :
     QWidget(parent),
     ui(new Ui::AllStuScore)
 {

@@ -1,10 +1,11 @@
-#ifndef STU_MAINWINDOW_H
+﻿#ifndef STU_MAINWINDOW_H
 #define STU_MAINWINDOW_H
 
-#include <QMainWindow>
-#include "stu_accessport.h"
-#include "stu_sqlmodel.h"
+#if _MSC_VER >= 1600	// MSVC2015 > 1899,	MSVC_VER = 14.0
+#pragma execution_character_set("utf-8")
+#endif
 
+#include <QMainWindow>
 // 串口部分头文件
 #include <QSerialPort>
 #include <QSerialPortInfo>
@@ -15,6 +16,10 @@
 
 #include <QtCore/qmath.h>
 
+#include "stu_accessport.h"
+#include "stu_sqlmodel.h"
+#include "network.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class Stu_MainWindow; }
 QT_END_NAMESPACE
@@ -24,7 +29,7 @@ class Stu_MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    Stu_MainWindow(QWidget* parent = nullptr);
+    Stu_MainWindow(QWidget* parent = nullptr,Network* = nullptr);
     ~Stu_MainWindow();
 
     void signalsToSlots();                                  // 设置信号和槽函数连接
@@ -58,6 +63,7 @@ private:
     Ui::Stu_MainWindow *ui;
     Stu_AccessPort testWin;
     Stu_SqlModel *sqlTableMoedl;
+    Network* net;
 
 private:
     void initMainWindow();

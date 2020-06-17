@@ -1,5 +1,10 @@
-#ifndef CONST_H
+﻿#ifndef CONST_H
 #define CONST_H
+
+#if _MSC_VER >= 1600	// MSVC2015 > 1899,	MSVC_VER = 14.0
+#pragma execution_character_set("utf-8")
+#endif
+
 #include <QString>
 #include <QByteArray>
 //--------------------------------------这里是宏定义---------------------------------
@@ -12,6 +17,15 @@
 
 
 //--------------------------------------这里是宏定义------------------------------end
+//--------------------------------------消息定义
+enum msgT{
+    e_Vcode=433,
+    e_GetHash,
+    e_RegisterComparedTheCode,
+    e_IsReg,
+    e_IsTea,
+    e_IsHave
+        };
 
 //--------------------------------------这里是各种数据结构体---------------------------
 //结构体基类+++++++++++++++++++++++++++++++
