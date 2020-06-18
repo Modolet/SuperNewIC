@@ -25,7 +25,7 @@
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTableView>
 #include <QtWidgets/QTextEdit>
-#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QToolButton>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -36,16 +36,17 @@ public:
     QWidget *centralwidget;
     QGridLayout *gridLayout_5;
     QWidget *widget_2;
-    QVBoxLayout *verticalLayout;
-    QPushButton *pushButton_user;
-    QFrame *line_3;
-    QVBoxLayout *verticalLayout_2;
-    QPushButton *pushButton_notice;
-    QPushButton *pushButton_resTest;
+    QGridLayout *gridLayout_9;
     QPushButton *pushButton_resValueRecorde;
+    QPushButton *pushButton_notice;
+    QToolButton *toolButton_icon;
+    QLabel *label_sign;
     QSpacerItem *verticalSpacer_8;
     QPushButton *pushButton_testSpecific;
     QSpacerItem *verticalSpacer_9;
+    QFrame *line_3;
+    QLabel *label_name;
+    QPushButton *pushButton_resTest;
     QFrame *line_2;
     QStackedWidget *stackedWidget;
     QWidget *page_studentInformation;
@@ -122,52 +123,60 @@ public:
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(widget_2->sizePolicy().hasHeightForWidth());
         widget_2->setSizePolicy(sizePolicy);
-        verticalLayout = new QVBoxLayout(widget_2);
-        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
-        pushButton_user = new QPushButton(widget_2);
-        pushButton_user->setObjectName(QString::fromUtf8("pushButton_user"));
+        widget_2->setMinimumSize(QSize(150, 0));
+        gridLayout_9 = new QGridLayout(widget_2);
+        gridLayout_9->setObjectName(QString::fromUtf8("gridLayout_9"));
+        pushButton_resValueRecorde = new QPushButton(widget_2);
+        pushButton_resValueRecorde->setObjectName(QString::fromUtf8("pushButton_resValueRecorde"));
 
-        verticalLayout->addWidget(pushButton_user);
+        gridLayout_9->addWidget(pushButton_resValueRecorde, 5, 0, 1, 2);
+
+        pushButton_notice = new QPushButton(widget_2);
+        pushButton_notice->setObjectName(QString::fromUtf8("pushButton_notice"));
+
+        gridLayout_9->addWidget(pushButton_notice, 3, 0, 1, 2);
+
+        toolButton_icon = new QToolButton(widget_2);
+        toolButton_icon->setObjectName(QString::fromUtf8("toolButton_icon"));
+        toolButton_icon->setMinimumSize(QSize(50, 50));
+        toolButton_icon->setMaximumSize(QSize(50, 50));
+
+        gridLayout_9->addWidget(toolButton_icon, 0, 0, 2, 1);
+
+        label_sign = new QLabel(widget_2);
+        label_sign->setObjectName(QString::fromUtf8("label_sign"));
+
+        gridLayout_9->addWidget(label_sign, 1, 1, 1, 1);
+
+        verticalSpacer_8 = new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Fixed);
+
+        gridLayout_9->addItem(verticalSpacer_8, 7, 0, 1, 1);
+
+        pushButton_testSpecific = new QPushButton(widget_2);
+        pushButton_testSpecific->setObjectName(QString::fromUtf8("pushButton_testSpecific"));
+
+        gridLayout_9->addWidget(pushButton_testSpecific, 8, 0, 1, 2);
+
+        verticalSpacer_9 = new QSpacerItem(20, 162, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        gridLayout_9->addItem(verticalSpacer_9, 9, 0, 1, 1);
 
         line_3 = new QFrame(widget_2);
         line_3->setObjectName(QString::fromUtf8("line_3"));
         line_3->setFrameShape(QFrame::HLine);
         line_3->setFrameShadow(QFrame::Sunken);
 
-        verticalLayout->addWidget(line_3);
+        gridLayout_9->addWidget(line_3, 2, 0, 1, 2);
 
-        verticalLayout_2 = new QVBoxLayout();
-        verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
-        pushButton_notice = new QPushButton(widget_2);
-        pushButton_notice->setObjectName(QString::fromUtf8("pushButton_notice"));
+        label_name = new QLabel(widget_2);
+        label_name->setObjectName(QString::fromUtf8("label_name"));
 
-        verticalLayout_2->addWidget(pushButton_notice);
+        gridLayout_9->addWidget(label_name, 0, 1, 1, 1);
 
         pushButton_resTest = new QPushButton(widget_2);
         pushButton_resTest->setObjectName(QString::fromUtf8("pushButton_resTest"));
 
-        verticalLayout_2->addWidget(pushButton_resTest);
-
-        pushButton_resValueRecorde = new QPushButton(widget_2);
-        pushButton_resValueRecorde->setObjectName(QString::fromUtf8("pushButton_resValueRecorde"));
-
-        verticalLayout_2->addWidget(pushButton_resValueRecorde);
-
-
-        verticalLayout->addLayout(verticalLayout_2);
-
-        verticalSpacer_8 = new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Fixed);
-
-        verticalLayout->addItem(verticalSpacer_8);
-
-        pushButton_testSpecific = new QPushButton(widget_2);
-        pushButton_testSpecific->setObjectName(QString::fromUtf8("pushButton_testSpecific"));
-
-        verticalLayout->addWidget(pushButton_testSpecific);
-
-        verticalSpacer_9 = new QSpacerItem(20, 162, QSizePolicy::Minimum, QSizePolicy::Expanding);
-
-        verticalLayout->addItem(verticalSpacer_9);
+        gridLayout_9->addWidget(pushButton_resTest, 4, 0, 1, 2);
 
 
         gridLayout_5->addWidget(widget_2, 0, 0, 1, 1);
@@ -468,11 +477,13 @@ public:
     void retranslateUi(QMainWindow *Stu_MainWindow)
     {
         Stu_MainWindow->setWindowTitle(QCoreApplication::translate("Stu_MainWindow", "Stu_MainWindow", nullptr));
-        pushButton_user->setText(QCoreApplication::translate("Stu_MainWindow", "\344\270\252\344\272\272\344\277\241\346\201\257", nullptr));
-        pushButton_notice->setText(QCoreApplication::translate("Stu_MainWindow", "\351\200\232\347\237\245\345\205\254\345\221\212", nullptr));
-        pushButton_resTest->setText(QCoreApplication::translate("Stu_MainWindow", "\347\224\265\351\230\273\346\265\213\351\207\217", nullptr));
         pushButton_resValueRecorde->setText(QCoreApplication::translate("Stu_MainWindow", "\351\230\273\345\200\274\345\210\206\346\236\220", nullptr));
+        pushButton_notice->setText(QCoreApplication::translate("Stu_MainWindow", "\351\200\232\347\237\245\345\205\254\345\221\212", nullptr));
+        toolButton_icon->setText(QCoreApplication::translate("Stu_MainWindow", "...", nullptr));
+        label_sign->setText(QCoreApplication::translate("Stu_MainWindow", "\347\255\276\345\220\215\357\274\232", nullptr));
         pushButton_testSpecific->setText(QCoreApplication::translate("Stu_MainWindow", "\346\265\213\350\257\225\344\270\223\347\224\250", nullptr));
+        label_name->setText(QCoreApplication::translate("Stu_MainWindow", "\345\247\223\345\220\215\357\274\232", nullptr));
+        pushButton_resTest->setText(QCoreApplication::translate("Stu_MainWindow", "\347\224\265\351\230\273\346\265\213\351\207\217", nullptr));
         pushButton_sureChangePassword->setText(QCoreApplication::translate("Stu_MainWindow", "\347\241\256\350\256\244\344\277\256\346\224\271", nullptr));
         label_userPasswords->setText(QCoreApplication::translate("Stu_MainWindow", "<html><head/><body><p>\345\257\206\347\240\201</p></body></html>", nullptr));
         label_userName->setText(QCoreApplication::translate("Stu_MainWindow", "<html><head/><body><p>\345\247\223\345\220\215</p></body></html>", nullptr));
