@@ -2,8 +2,10 @@
 
 Stu_SqlModel::Stu_SqlModel(QObject *parent,Network* net) : QObject(parent)
 {
-    openMysql();        // 打开数据库
     this->net = net;
+    qDebug() << net;
+    openMysql();        // 打开数据库
+
 }
 
 Stu_SqlModel::~Stu_SqlModel()
@@ -16,11 +18,17 @@ void Stu_SqlModel::openMysql()
 {
     // 2.连接数据库
     db =  net->getDB();
-
+    qDebug() << "get db success";
     query = net->getSQ();                        // 获取当前使用的数据库
+    qDebug() << "get sq success";
+    query.exec(QString("select * from `%1`").arg(ex_id));
+    qDebug() << query.next();
+    qDebug() << query.value(0) << query.value(1);
+    qDebug() << "StudentSql";
 
-    model = new QSqlTableModel(this);
+    model = new QSqlTableModel(this,db);
     model->setTable(QString::number(ex_id));     // 连接到该学生使用的表
+    model->removeColumns(4, 7);
     model->select();                             // 显示tableModel数据
 
     model->setEditStrategy(QSqlTableModel::OnManualSubmit); // 设置手动提交修改

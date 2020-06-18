@@ -120,11 +120,12 @@ void Login::login(bool is_reg)
             }
             else
             {
+                qDebug() << "student";
                 ex_id = sc_TEALogin.userID;
                 ex_pwd = sc_TEALogin.userPWD;
-                Stu_MainWindow* stu = new Stu_MainWindow(nullptr);
-                this->close();
+                Stu_MainWindow* stu = new Stu_MainWindow(nullptr,net);
                 stu->show();
+                this->close();
             }
 
         } else {

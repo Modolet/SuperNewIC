@@ -26,9 +26,12 @@ void Stu_MainWindow::signalsToSlots()                                       // �
 
 void Stu_MainWindow::initMainWindow()                                       // 初始化测试窗口，包含布局等
 {
-    sqlTableMoedl = new Stu_SqlModel();                                     // 创建一个数据库可视化的模型
+    qDebug() << "initWindow" ;
+    sqlTableMoedl = new Stu_SqlModel(this,net);                                     // 创建一个数据库可视化的模型
+    qDebug() << "initsqlmodel";
     ui->tableView_page_resTest->setModel(sqlTableMoedl->model);         // 把模型插入到堆栈窗口页面1的表格里面
     ui->tableView_page_dataAnalyse->setModel(sqlTableMoedl->model);     // 把模型插入到堆栈窗口页面3的表格里面
+    qDebug() << "initsqlmodel success";
 
     ui->tableView_page_resTest->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);     // 设置展示的数据填满表格
     ui->tableView_page_dataAnalyse->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch); // 设置展示的数据填满表格
