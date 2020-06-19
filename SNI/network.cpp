@@ -106,19 +106,20 @@ bool Network::changePwd(int id, QString oldPwd, QString newPwd) {
 
 bool Network::updateIcon(int id, const QByteArray *img, QString format)
 {
-    sq.prepare("update datas set image=?,format=? where id=?");
+    sq.prepare(QString("update `%1` set usericon=?,imgformat=?").arg(QString("%1_info").arg(QString::number(id))));
     sq.addBindValue(QVariant(*img));
     sq.addBindValue(format);
-    sq.addBindValue(id);
+
     if(sq.exec())
         return true;
     else
+        QMessageBox::warning(nullptr,"错误",sq.lastError().text());
         return false;
 }
 
 bool Network::updateSign(QString sign)
 {
-    if(sq.exec(QString("update datas set sign='%1' where id=%2").arg(sign).arg(ex_id)))
+    if(sq.exec(QString("update `%1` set sign='%2'").arg(QString("%1_info").arg(QString::number(ex_id))).arg(sign)))
         return true;
     return false;
 }
@@ -205,9 +206,11 @@ QSqlQueryModel *Network::setDatasModel()
 
 info Network::getInfo(int id)
 {
-    if(!sq.exec(QString("select name,sign,usericon,imgformat from `%1`;").arg(QString::number(id))))
+    QString exec = QString("select name,sign,usericon,imgformat from `%1`").arg(QString("%1_info").arg(QString::number(id)));
+    if(!sq.exec(exec))
     {
-        QMessageBox::warning(NULL, "错误1", db.lastError().text());
+        QMessageBox::warning(NULL, "错误1", sq.lastError().text());
+
         return {0,0};
     }
     sq.next();

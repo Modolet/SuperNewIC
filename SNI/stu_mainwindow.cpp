@@ -17,6 +17,7 @@ Stu_MainWindow::Stu_MainWindow(QWidget *parent,Network* net)
     initMainWindow();                                                   // 初始化窗口
     initMenu();
     signalsToSlots();                                                   // 设置信号和槽函数连接
+    ui->toolButton_icon->setStyleSheet("QToolButton::menu-indicator{image:none;}");
 }
 
 Stu_MainWindow::~Stu_MainWindow()
@@ -57,6 +58,7 @@ void Stu_MainWindow::getInfo()
     ui->label_sign->setText(sc_info.sign);
     if(sc_info.image.size() == 0)
     {
+        icon = new QIcon(":/Icon/studenticon.jpg");
         ui->toolButton_icon->setIcon(*icon);
         ui->toolButton_icon->setIconSize(QSize(50,50));
     }

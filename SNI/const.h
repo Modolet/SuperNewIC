@@ -14,7 +14,7 @@
 #define TEAMSGLOGIN         0x1001
 #define TEAMSGGETSTUINFO    0x1002
 #define TEAMSGSEND          0x1003
-#define HOST                "127.0.0.1"
+#define HOST                "sni.modolet.xyz"
 
 
 //--------------------------------------这里是宏定义------------------------------end

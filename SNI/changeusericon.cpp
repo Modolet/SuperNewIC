@@ -20,6 +20,7 @@ ChangeUserIcon::ChangeUserIcon(QWidget *parent,QFile* imgFile) :
     QWidget(parent),
     ui(new Ui::ChangeUserIcon)
 {
+    m_currentCaptureState = initCapture;
     ui->setupUi(this);
     this->imgFile = imgFile;
     loadPixmap();
@@ -58,6 +59,7 @@ void ChangeUserIcon::mousePressEvent(QMouseEvent *event)
         {
             m_currentCaptureState = beginCaptureImage;
             m_beginPoint = event->pos();
+
         }
         // 是否在拉伸的小矩形中;
         else if (m_stretchRectState != NotSelect)
@@ -112,6 +114,7 @@ void ChangeUserIcon::mouseMoveEvent(QMouseEvent* event)
     {
         setCursor(Qt::ArrowCursor);
     }
+    update();
 
     return QWidget::mouseMoveEvent(event);
 }
@@ -322,6 +325,7 @@ void ChangeUserIcon::paintEvent(QPaintEvent *event)
     }
 
     m_painter.end();  //重绘结束;
+    update();
     return QWidget::paintEvent(event);
 }
 
