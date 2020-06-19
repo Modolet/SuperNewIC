@@ -14,18 +14,18 @@
 #define TEAMSGLOGIN         0x1001
 #define TEAMSGGETSTUINFO    0x1002
 #define TEAMSGSEND          0x1003
-#define HOST                "sni.modolet.xyz"
+#define HOST                "127.0.0.1"
 
 
 //--------------------------------------这里是宏定义------------------------------end
 //--------------------------------------消息定义
 enum msgT{
     e_Vcode=433,
-    e_GetHash,
-    e_RegisterComparedTheCode,
-    e_IsReg,
-    e_IsTea,
-    e_IsHave
+    e_GetHash,//434
+    e_RegisterComparedTheCode,//435
+    e_IsReg,//436
+    e_IsTea,//437
+    e_IsHave//438
         };
 
 //--------------------------------------这里是各种数据结构体---------------------------
@@ -72,6 +72,8 @@ struct info{
     QByteArray image;
     QString format;
     int score;
+    QByteArray usericon;
+    QByteArray imgformat;
 };
 //学生信息结构体
 struct studentInfo{

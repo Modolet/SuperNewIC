@@ -24,6 +24,7 @@ public:
     ~StudentExperimentalResult();
 
 private:
+    QSqlDatabase db;
     Network* net;
     int id;
     info sc_stuInfo;
