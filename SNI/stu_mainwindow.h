@@ -6,19 +6,19 @@
 #endif
 
 #include <QMainWindow>
-// 串口部分头文件
-#include <QSerialPort>
-#include <QSerialPortInfo>
-
-// 添加布局相关的头文件
-#include <QHBoxLayout>
-#include <QVBoxLayout>
+#include <QImage>
+#include <QIcon>
+#include <QPixmap>
+#include <QMenu>
+#include <QAction>
 
 #include <QtCore/qmath.h>
 
 #include "stu_accessport.h"
 #include "stu_sqlmodel.h"
+#include "changeusericon.h"
 #include "network.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Stu_MainWindow; }
@@ -57,16 +57,29 @@ private slots:
 
     void on_pushButton_notice_clicked();
 
-    void on_pushButton_user_clicked();
+    void slot_changeIcon();
+    void slot_updateIcon(QPixmap catureImage,QString format);
+    void slot_changeSign();
+    void slot_updateSign();
 
 private:
     Ui::Stu_MainWindow *ui;
     Stu_AccessPort testWin;
     Stu_SqlModel *sqlTableMoedl;
     Network* net;
+     QIcon* icon;
+    //菜单
+    QMenu* iconMenu;
+    QMenu* settingMenu;
+    QMenu* t_style;//二级菜单：主题
+
+    //编辑
+    QLineEdit* le_sign;
 
 private:
     void initMainWindow();
+    void initMenu();                //初始化菜单
+    void getInfo();
 
 };
 #endif // STU_MAINWINDOW_H

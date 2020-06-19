@@ -1,6 +1,11 @@
 ﻿#include "stu_mainwindow.h"
 #include "ui_stu_mainwindow.h"
 
+#include <QFileDialog>
+#include <QToolButton>
+#include <QImageReader>
+
+
 Stu_MainWindow::Stu_MainWindow(QWidget *parent,Network* net)
     : QMainWindow(parent)
     , ui(new Ui::Stu_MainWindow)
@@ -8,8 +13,9 @@ Stu_MainWindow::Stu_MainWindow(QWidget *parent,Network* net)
     ui->setupUi(this);
 
     this->net = net;
-
+    getInfo();
     initMainWindow();                                                   // 初始化窗口
+    initMenu();
     signalsToSlots();                                                   // 设置信号和槽函数连接
 }
 
@@ -42,10 +48,117 @@ void Stu_MainWindow::initMainWindow()                                       // �
     get_average_variance_standardVariance();                        // 防止开始数据库有数据，所以计算均值和方差
 }
 
-void Stu_MainWindow::on_pushButton_user_clicked()
+void Stu_MainWindow::getInfo()
 {
-    ui->stackedWidget->setCurrentIndex(0);
+    qDebug() << "getinfo1";
+    //获取教师信息
+    info sc_info = net->getInfo();
+    ui->label_name->setText(sc_info.name);
+    ui->label_sign->setText(sc_info.sign);
+    if(sc_info.image.size() == 0)
+    {
+        ui->toolButton_icon->setIcon(*icon);
+        ui->toolButton_icon->setIconSize(QSize(50,50));
+    }
+    else
+    {
+        //将QByteArray转为QImageReader
+        QBuffer buffer(&sc_info.image);
+        buffer.open(QIODevice::ReadOnly);
+        QImageReader reader(&buffer,sc_info.format.toStdString().c_str());
+        qDebug() << sc_info.format;
+        QImage img = reader.read();
+        qDebug() << buffer.size();
+        //设置头像和大小
+        ui->toolButton_icon->setIcon(QPixmap::fromImage(img));
+        ui->toolButton_icon->setIconSize(this->size());
+    }
+
+    this->setWindowTitle(sc_info.name);
+    qDebug() << "getinfo2";
 }
+
+void Stu_MainWindow::initMenu()
+{
+    iconMenu = new QMenu();
+
+    QAction* changeIcon = new QAction("修改头像",this);
+    QAction* changeSign = new QAction("修改签名",this);
+
+    iconMenu->addAction(changeIcon);
+    iconMenu->addAction(changeSign);
+
+    //添加到按钮
+    ui->toolButton_icon->setMenu(iconMenu);
+    ui->toolButton_icon->setPopupMode(QToolButton::InstantPopup);
+
+    //信号和槽
+
+    connect(changeIcon,&QAction::triggered,this,&Stu_MainWindow::slot_changeIcon);
+    connect(changeSign,&QAction::triggered,this,&Stu_MainWindow::slot_changeSign);
+}
+
+
+void Stu_MainWindow::slot_changeIcon()
+{
+    QFile* imgFile = new QFile(QFileDialog::getOpenFileName(nullptr,"请选择头像文件",nullptr,"图像文件（*.BMP *.GIF *.JPG *.JPEG *.PNG *.PBN *.PGM *.PPM *.XBM *.XPM"));
+    if(imgFile->fileName() == NULL)
+        return;
+    else
+    {
+        ChangeUserIcon* ci = new ChangeUserIcon(this,imgFile);
+        connect(ci,&ChangeUserIcon::signalCompleteCature,this,&Stu_MainWindow::slot_updateIcon);
+        ci->show();
+
+    }
+}
+
+void Stu_MainWindow::slot_updateIcon(QPixmap catureImage, QString format)
+{
+    if(catureImage.size().width() <= 50)
+    {
+        QMessageBox::warning(this,"错误","您选择的图片过小！请选择分辨率大于50x50的图片！");
+        return;
+    }
+    //将图片转为QByteArray
+    QBuffer buffer;
+    QByteArray* pixArray = new QByteArray;
+    buffer.open(QIODevice::ReadWrite);
+    catureImage.save(&buffer,format.toStdString().c_str());
+    pixArray->append(buffer.data());
+    if(net->updateIcon(ex_id,pixArray,format))
+    {
+        QMessageBox::information(this,"提示","修改成功！");
+        ui->toolButton_icon->setIcon(QIcon(catureImage));
+    }
+}
+
+void Stu_MainWindow::slot_changeSign()
+{
+    le_sign = new QLineEdit(this);
+    connect(le_sign,&QLineEdit::editingFinished,this,&Stu_MainWindow::slot_updateSign);
+    le_sign->setGeometry(65,35,165,20);
+    le_sign->show();
+    le_sign->setText(ui->label_sign->text());
+    le_sign->selectAll();
+    le_sign->setFocus();
+}
+
+void Stu_MainWindow::slot_updateSign()
+{
+    QString sign = le_sign->text();
+    le_sign->hide();
+    if(net->updateSign(sign))
+    {
+        ui->label_sign->setText(sign);
+    }
+    else
+    {
+        QMessageBox::warning(this,"错误","数据传输出现错误！请检查网络连接后重试！");
+    }
+}
+
+
 void Stu_MainWindow::on_pushButton_notice_clicked()
 {
     ui->stackedWidget->setCurrentIndex(1);

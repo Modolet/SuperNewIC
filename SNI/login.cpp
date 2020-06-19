@@ -23,7 +23,7 @@ Login::Login(QWidget *parent) : QMainWindow(parent), ui(new Ui::Login) {
 
     //下面是信号和槽==============================================================================
     connect(this, &Login::signal_login, this, &Login::on_autoLogin);
-    connect(net->socket,&QTcpSocket::errorOccurred,this,&Login::NetErr);
+    //connect(net->socket,&QTcpSocket::errorOccurred,this,&Login::NetErr);
 
     SetUerEdit();  //读取并初始化界面
     this->show();
