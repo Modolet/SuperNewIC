@@ -6,6 +6,7 @@ Stu_AccessPort::Stu_AccessPort(QWidget *parent) :
     ui(new Ui::Stu_AccessPort)
 {
     ui->setupUi(this);
+    timer = new QTimer(this);
 
     findSerial();               // 获取有用或者闲置端口，并且添加到串口选择下拉框
     initSerials();              // 初始化串口，设置波特率，停止位...
@@ -21,12 +22,13 @@ Stu_AccessPort::~Stu_AccessPort()
 
 void Stu_AccessPort::signalsToSlots()             // 把信号和槽函数连接起来
 {
+    connect(&serial, &QSerialPort::readyRead, [=](){timer->start(10);});    // 接收硬件来的数据前等待100ms
     // 在测试专用下，一旦串口有数据进来就执行测试窗口的槽函数
-    connect(&serial, &QSerialPort::readyRead, this, &Stu_AccessPort::readData);
+    connect(timer, &QTimer::timeout, this, &Stu_AccessPort::readData);
     // 主窗口进行单次测量的时候，调用单次测量槽函数
-    connect(&serial, &QSerialPort::readyRead, this, &Stu_AccessPort::slot_singleTest);
+    connect(timer, &QTimer::timeout, this, &Stu_AccessPort::slot_singleTest);
     // 主窗口进行单次测量的时候，调用多次测量槽函数
-    connect(&serial, &QSerialPort::readyRead, this, &Stu_AccessPort::slot_repeatTest);
+    connect(timer, &QTimer::timeout, this, &Stu_AccessPort::slot_repeatTest);
 }
 
 void Stu_AccessPort::findSerial()                 // 查找计算机可用串口，并生成列表放在ui界面的串口选择下拉框
@@ -159,6 +161,7 @@ void Stu_AccessPort::readData()
         }
         buf.clear();
     }
+    timer->stop();
 }
 
 
@@ -175,6 +178,15 @@ void Stu_AccessPort::mainWinSend(QByteArray data)
     serial.write(data);
 }
 
+bool judgeRec(QByteArray rec)
+{
+    int int_10 = rec.toInt(NULL, 16);
+    if((int_10 >> 7) & 1)
+        return true;
+    else
+        return false;
+}
+
 // 单次测量
 void Stu_AccessPort::slot_singleTest()
 {
@@ -184,11 +196,11 @@ void Stu_AccessPort::slot_singleTest()
         vis = serial.readAll();                             // 从串口读取数据放在vis1中
         if(time % 3 == 0)
         {
-            if(vis == "01")
+            if(judgeRec(vis))
             {
                 index[0] = index[0] + 0x2;                  // 电桥反转 +0010
 
-                if((index[0]>>2)&1)
+                if((index[0]>>2) & 1)
                 {
                     R01 = getR0(index[0], index[1], index[2], index[3], index[4], index[5]);
                     R01 = 10 / (1 - R01 / pow(2, 16));          // 计算R0的公式
@@ -229,12 +241,13 @@ void Stu_AccessPort::slot_singleTest()
         time++;
         vis.clear();
     }
+    timer->stop();
 }
 
 // 多次测量
 void Stu_AccessPort::slot_repeatTest()
 {
-
+    timer->stop();
 }
 
 // 电桥平衡时，把控制R0的那20位二进制串转化为十进制数
