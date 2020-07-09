@@ -139,7 +139,47 @@ void Stu_AccessPort::on_comboBox_serialSelect_currentTextChanged(const QString &
 // 发送
 void Stu_AccessPort::on_pushButton_send_clicked()
 {
-    serial.write(ui->plainTextEdit_singleSend->toPlainText().toLatin1());
+    if(ui->checkBox_16Send->isChecked())                                   // 16进制发送
+    {
+        QString str = ui->plainTextEdit_singleSend->toPlainText();
+        int i, num;
+        char data[1];
+        for(i = 0; i < str.length(); i++)
+        {
+            if(i != 0 && i % 2 != 0)
+            {
+                num = str.mid(i - 1, 2).toInt(NULL, 16);
+                data[0] = num;
+                qDebug() << "num: " << num << "str1: " << str.mid(i - 1, 2);
+                serial.write(data, 1);
+            }
+        }
+        if(i % 2)
+        {
+            num = str.mid(i - 1, 1).toInt(NULL, 16);
+            data[0] = num;
+            qDebug() << i << "num: " << num << "str2: " << str.mid(i - 1, 2);
+            serial.write(data, 1);
+        }
+    }
+    else
+        serial.write(ui->plainTextEdit_singleSend->toPlainText().toLatin1());
+}
+
+// 检查16进制输入的字符的时候是否有不规范的
+void Stu_AccessPort::on_plainTextEdit_singleSend_textChanged()
+{
+    if(ui->checkBox_16Send->isChecked())
+    {
+        QString str = ui->plainTextEdit_singleSend->toPlainText();
+        for(int i = 0; i < str.length(); i++)
+            if(!((str[i] >= '0' && str[i] <= '9') || (str[i] >= 'a' && str[i] <= 'f') || (str[i] >= 'A' && str[i] <='F')))
+            {
+                ui->plainTextEdit_singleSend->clear();
+                QMessageBox::warning(this, "提示", "请输入正确的格式0-9a-fA-F例5010");
+                return;
+            }
+    }
 }
 
 // 清除发送区
@@ -157,20 +197,49 @@ void Stu_AccessPort::readData()
         buf = serial.readAll();
         if(!buf.isEmpty())
         {
-            ui->plainTextEdit_receiveDisplay->appendPlainText(buf);
+            str_char += buf;
+            qDebug() << "buf: " << buf ;
+
+            for(int i = 0; i < buf.length(); i++)
+            {
+                if((int)buf.at(i) >= 0)
+                {
+                    str_16 += QString::number(buf.at(i), 16) + " ";
+                    //qDebug() << "int" <<(int)buf.at(i) << "string" << QString::number(abs(buf.at(i)), 16);
+                }
+                else
+                {
+                    str_16 += QString::number(128 + 128 - abs(buf.at(i)), 16) + " ";
+                     //qDebug() << "int" <<(int)buf.at(i) << "string" << QString::number(128 + 128 - abs(buf.at(i)), 16);
+                }
+            }
+
+            if(ui->checkBox_16Show->isChecked())
+                ui->plainTextEdit_receiveDisplay->setPlainText(str_16);
+            else
+                ui->plainTextEdit_receiveDisplay->setPlainText(str_char);
         }
         buf.clear();
     }
     timer->stop();
 }
 
+// 是否16进制显示
+void Stu_AccessPort::on_checkBox_16Show_stateChanged(int arg1)
+{
+    if(ui->checkBox_16Show->isChecked())
+        ui->plainTextEdit_receiveDisplay->setPlainText(str_16);
+    else
+        ui->plainTextEdit_receiveDisplay->setPlainText(str_char);
+}
 
 // 清除接收区
 void Stu_AccessPort::on_pushButton_clearReceive_clicked()
 {
-    ui->plainTextEdit_receiveDisplay->clear();
+    str_16.clear();
+    str_char.clear();
+    ui->plainTextEdit_receiveDisplay->setPlainText("");
 }
-
 
 // 主窗口调用发送数据
 void Stu_AccessPort::mainWinSend(QByteArray data)
@@ -178,13 +247,16 @@ void Stu_AccessPort::mainWinSend(QByteArray data)
     serial.write(data);
 }
 
-bool judgeRec(QByteArray rec)
+// 判断电桥是否平衡
+bool isBalance(QByteArray rec)
 {
-    int int_10 = rec.toInt(NULL, 16);
-    if((int_10 >> 7) & 1)
-        return true;
-    else
-        return false;
+    if(!rec.isEmpty())
+    {
+        int int_rec = (int)rec.at(0);
+        if(int_rec <= -1 && int_rec >= -128)
+            return true;
+    }
+    return false;
 }
 
 // 单次测量
@@ -192,17 +264,15 @@ void Stu_AccessPort::slot_singleTest()
 {
     if(isMainWindowUse && isSingletest)
     {
-        int now = (time % 3) * 2;                           // 获得当前一组数据的第几次发送数据
-        vis = serial.readAll();                             // 从串口读取数据放在vis1中
+        int now = time % 3;                                     // 获得当前一组数据的第几次发送数据
+        vis = serial.readAll();                                 // 从串口读取数据放在vis1中
         if(time % 3 == 0)
         {
-            if(judgeRec(vis))
+            if(isBalance(vis))                                   // 现在只用判断最高位是否为1
             {
-                index[0] = index[0] + 0x2;                  // 电桥反转 +0010
-
-                if((index[0]>>2) & 1)
+                if((index[0] >> 5) & 1)                         // 0010 0000
                 {
-                    R01 = getR0(index[0], index[1], index[2], index[3], index[4], index[5]);
+                    R01 = getR0(index[1], index[2]);
                     R01 = 10 / (1 - R01 / pow(2, 16));          // 计算R0的公式
                     emit  testDone(R0, R01, sqrt(R0 * R01));
                     circuitReset();                             // 电路参数归零
@@ -210,34 +280,34 @@ void Stu_AccessPort::slot_singleTest()
                 }
                 else
                 {
-                    R0 = getR0(index[0], index[1], index[2], index[3], index[4], index[5]);
+                    R0 = getR0(index[1], index[2]);
                     R0 = 10 / (1 - R0 / pow(2, 16));
                 }
-                for(int i = 1; i < 6; i++)              // 一次测量完成后，控制R0的数值全部归零
-                    index[i] = 0;
+
+                index[0] = index[0] + 0x20;                     // 电桥反转 +0010 0000
+                index[1] = 0; index[2] = 0;                     // 一次测量完成后，控制R0的数值全部归零
             }
             else if(time == 3)
-                index[0] += 0x4;                    // 0100
+                index[0] += 0x40;                                // 0100 0000
             else
             {
-                index[5] += 2;
-                for(int i = 5; i > 0; i--)
-                    if(index[i] >= 16)
-                    {
-                        index[i] = 0;
-                        index[i - 1]++;
-                    }
-                if(index[0]&1 && index[1] == 15 && index[2] == 15 && index[3] == 15 && index[4] == 15 && index[5] == 15)    // 0001 1111   1111
+                index[2]++;
+                if(index[2] > 0xFF)
                 {
-                    QMessageBox::information(this, "提示", "电桥一直未平衡！");
-                    return ;
+                    index[1]++;
+                    index[2] = 0;
+                    if(index[2] > 0xFF)
+                    {
+                        QMessageBox::information(this, "提示", "电桥一直未平衡！");
+                        return ;
+                    }
                 }
             }
         }
-        QByteArray dataOfSend = data[index[now]] + data[index[now + 1]];    // 获得当前要发送的数据
-        serial.write(dataOfSend);
+        char dataOfSend[1] = {(char)index[now]};
+        serial.write(dataOfSend, 1);
         if(time == 3)
-            index[0] -= 4;
+            index[0] -= 0x40;
         time++;
         vis.clear();
     }
@@ -251,21 +321,18 @@ void Stu_AccessPort::slot_repeatTest()
 }
 
 // 电桥平衡时，把控制R0的那20位二进制串转化为十进制数
-int Stu_AccessPort::getR0(int i0, int i1, int i2, int i3, int i4, int i5)
+int Stu_AccessPort::getR0(int i0, int i1)
 {
-    QString str_16 = QString::number(i0, 16) + QString::number(i1, 16) + QString::number(i2, 16) + QString::number(i3, 16) + QString::number(i4, 16) + QString::number(i5, 16);
+    QString str_16 = QString::number(i0, 16) + QString::number(i1, 16);
     int int_10 = str_16.toInt(NULL, 16);                   // 十六进制字符串转为十进制数。如2b5f67H->2842471
-    QString str_2 = QString::number(int_10, 2);            // 十进制数转为二进制串，如2842471->"1010110101111101100111"
-    QString str_2_eff = str_2.mid(str_2.length()-21, 20);  // 截取控制R0的那20位二进制串，即倒数21位到倒数第1位之间的长度，如"1010110101111101100111"->"01011010111110110011"
-    int int_10_eff = str_2_eff.toInt(NULL, 2);             // 把那20位二进制串转化为10进制数，如"01011010111110110011"->372659
-    return int_10_eff;
+    return int_10;
 }
 
 // 电路参数归零
 void Stu_AccessPort::circuitReset()
 {
     time = 0;
-    for(int i = 0; i < 6; i++)          // 一次测量完成后，控制R0的数值全部归零
+    for(int i = 0; i < 3; i++)          // 一次测量完成后，控制R0的数值全部归零
         index[i] = 0;
     vis.clear();
 }
@@ -302,3 +369,5 @@ void Stu_AccessPort::circuitReset()
         .
 直到收回数据01（标志位）（01ox代表电桥平衡，00ox代表电桥非平衡）
 */
+
+

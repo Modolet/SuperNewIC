@@ -58,6 +58,10 @@ private slots:
 
     void on_pushButton_clearReceive_clicked();
 
+    void on_plainTextEdit_singleSend_textChanged();
+
+    void on_checkBox_16Show_stateChanged(int arg1);
+
 public:
     bool isMainWindowUse = true;    // 用作是否主窗口用的标识
     bool isSingletest = true;       // 用作是否单次测量的标识
@@ -66,18 +70,18 @@ public:
 private:
     Ui::Stu_AccessPort *ui;
     QSerialPort serial;             // 全局串口对象
-    QByteArray data[16] = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"};
+    int index[3] = {0, 0, 0};
     QByteArray vis;
-    int index[6] = {0};
     int time = 0;
     double R0 = 0, R01 = 0, Rx = 0;
     QTimer *timer;                  // 创建一个全局定时器，硬件接收端口数据需要延迟一段时间
+    QString str_16, str_char;
 
 private:
     void findSerial();                          // 查找计算机可用串口
     void initSerials();                         // 初始化串口，全部默认
     void signalsToSlots();                      // 把信号和槽函数连接起来
-    int getR0(int, int, int, int, int, int);    // 把控制R0的20位二进制代码转为十进制
+    int getR0(int, int);                        // 把控制R0的16位二进制代码转为十进制
     void circuitReset();                        // 参数归零
 };
 
