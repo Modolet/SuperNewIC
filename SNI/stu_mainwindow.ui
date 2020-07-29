@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>Stu_MainWindow</class>
  <widget class="QMainWindow" name="Stu_MainWindow">
@@ -273,6 +273,13 @@
              </property>
             </spacer>
            </item>
+           <item row="1" column="0">
+            <widget class="QPushButton" name="pushButton_showDataConect">
+             <property name="text">
+              <string>显示交互的数据</string>
+             </property>
+            </widget>
+           </item>
            <item row="1" column="1">
             <spacer name="verticalSpacer">
              <property name="orientation">
@@ -361,7 +368,7 @@
               </spacer>
              </item>
              <item row="0" column="5">
-              <widget class="QPushButton" name="pushButton">
+              <widget class="QPushButton" name="pushButton_reset">
                <property name="text">
                 <string>复位</string>
                </property>
@@ -490,7 +497,7 @@
       </property>
       <layout class="QGridLayout" name="gridLayout_9">
        <item row="0" column="0" rowspan="2">
-        <widget class="QToolButton" name="toolButton_user">
+        <widget class="QToolButton" name="toolButton_icon">
          <property name="minimumSize">
           <size>
            <width>50</width>

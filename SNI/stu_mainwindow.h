@@ -62,6 +62,10 @@ private slots:
     void slot_changeSign();
     void slot_updateSign();
 
+    void on_pushButton_showDataConect_clicked();
+
+    void on_pushButton_reset_clicked();
+
 private:
     Ui::Stu_MainWindow *ui;
     Stu_AccessPort testWin;

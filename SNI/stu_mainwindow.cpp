@@ -260,3 +260,13 @@ void Stu_MainWindow::get_average_variance_standardVariance()                    
     ui->lineEdit_variance->setText(QString::number(variance, 10, 4));
     ui->lineEdit_standardDeviation->setText(QString::number(standardVariance, 10, 4));
 }
+
+void Stu_MainWindow::on_pushButton_showDataConect_clicked()
+{
+    testWin.showDataWidge->show();
+}
+
+void Stu_MainWindow::on_pushButton_reset_clicked()
+{
+    testWin.circuitReset();
+}

@@ -1,4 +1,4 @@
-﻿#ifndef ALLSTUSCORE_H
+#ifndef ALLSTUSCORE_H
 #define ALLSTUSCORE_H
 
 #if _MSC_VER >= 1600	// MSVC2015 > 1899,	MSVC_VER = 14.0

@@ -1,4 +1,4 @@
-﻿#ifndef CHANGEPASSWD_H
+#ifndef CHANGEPASSWD_H
 #define CHANGEPASSWD_H
 
 #if _MSC_VER >= 1600	// MSVC2015 > 1899,	MSVC_VER = 14.0

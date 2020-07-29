@@ -30,6 +30,7 @@ SOURCES += \
     network.cpp \
     stu_accessport.cpp \
     stu_mainwindow.cpp \
+    stu_showtalkdata.cpp \
     stu_sqlmodel.cpp \
     studentexperimentalresult.cpp \
     studentlist.cpp \
@@ -46,6 +47,7 @@ HEADERS += \
     network.h \
     stu_accessport.h \
     stu_mainwindow.h \
+    stu_showtalkdata.h \
     stu_sqlmodel.h \
     studentexperimentalresult.h \
     studentlist.h \
@@ -60,6 +62,7 @@ FORMS += \
     mainwindow.ui \
     stu_accessport.ui \
     stu_mainwindow.ui \
+    stu_showtalkdata.ui \
     studentexperimentalresult.ui
 
 # Default rules for deployment.
@@ -73,8 +76,8 @@ RESOURCES += \
 
 RC_ICONS = "ICON.ico"
 RC_LANG = 0x0004
-VERSION = 0.9.0.0
-QMAKE_TARGET_PRODUCT="è¶…æ–°èŠ¯"
-QMAKE_TARGET_COMPANY="è¶…æ–°èŠ¯å›¢é˜Ÿ"
-QMAKE_TARGET_DESCRIPTION="è¶…æ–°èŠ¯ç®¡ç†è½¯ä»¶"
-QMAKE_TARGET_COPYRIGHT="Copyright Â© 2020 è¶…æ–°èŠ¯å›¢é˜Ÿ All Rights Reserved"
+VERSION = 1.1.0.1
+QMAKE_TARGET_PRODUCT="³¬ĞÂĞ¾"
+QMAKE_TARGET_COMPANY="³¬ĞÂĞ¾ÍÅ¶Ó"
+QMAKE_TARGET_DESCRIPTION="³¬ĞÂĞ¾¹ÜÀíÈí¼ş"
+QMAKE_TARGET_COPYRIGHT="Copyright ? 2020 ³¬ĞÂĞ¾ÍÅ¶Ó All Rights Reserved"

@@ -29,25 +29,27 @@ public:
     QPlainTextEdit *plainTextEdit_receiveDisplay;
     QWidget *widget;
     QGridLayout *gridLayout;
-    QLabel *label_baudRate;
-    QPushButton *pushButton_clearReceive;
-    QComboBox *comboBox_dataBits;
-    QSpacerItem *verticalSpacer;
-    QComboBox *comboBox_stopBits;
-    QComboBox *comboBox_parity;
-    QComboBox *comboBox_baudRate;
-    QLabel *label_dataBits;
-    QCheckBox *checkBox_openSerial;
-    QLabel *label_stopBits;
     QLabel *label_baudRate_2;
+    QLabel *label_dataBits;
+    QComboBox *comboBox_parity;
+    QComboBox *comboBox_stopBits;
+    QComboBox *comboBox_dataBits;
+    QComboBox *comboBox_baudRate;
+    QPushButton *pushButton_clearReceive;
+    QSpacerItem *verticalSpacer;
+    QCheckBox *checkBox_openSerial;
     QComboBox *comboBox_serialSelect;
+    QLabel *label_stopBits;
+    QLabel *label_baudRate;
     QLabel *label_parity;
+    QCheckBox *checkBox_16Show;
     QWidget *widget_2;
     QGridLayout *gridLayout_2;
+    QLabel *label;
     QPlainTextEdit *plainTextEdit_singleSend;
     QPushButton *pushButton_send;
     QPushButton *pushButton_clearSend;
-    QLabel *label;
+    QCheckBox *checkBox_16Send;
 
     void setupUi(QWidget *Stu_AccessPort)
     {
@@ -66,33 +68,28 @@ public:
         widget->setObjectName(QString::fromUtf8("widget"));
         gridLayout = new QGridLayout(widget);
         gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
-        label_baudRate = new QLabel(widget);
-        label_baudRate->setObjectName(QString::fromUtf8("label_baudRate"));
-
-        gridLayout->addWidget(label_baudRate, 2, 0, 1, 1);
-
-        pushButton_clearReceive = new QPushButton(widget);
-        pushButton_clearReceive->setObjectName(QString::fromUtf8("pushButton_clearReceive"));
-        QSizePolicy sizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
+        label_baudRate_2 = new QLabel(widget);
+        label_baudRate_2->setObjectName(QString::fromUtf8("label_baudRate_2"));
+        QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         sizePolicy.setHorizontalStretch(0);
-        sizePolicy.setVerticalStretch(10);
-        sizePolicy.setHeightForWidth(pushButton_clearReceive->sizePolicy().hasHeightForWidth());
-        pushButton_clearReceive->setSizePolicy(sizePolicy);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(label_baudRate_2->sizePolicy().hasHeightForWidth());
+        label_baudRate_2->setSizePolicy(sizePolicy);
 
-        gridLayout->addWidget(pushButton_clearReceive, 8, 0, 1, 1);
+        gridLayout->addWidget(label_baudRate_2, 0, 0, 1, 1);
 
-        comboBox_dataBits = new QComboBox(widget);
-        comboBox_dataBits->addItem(QString());
-        comboBox_dataBits->addItem(QString());
-        comboBox_dataBits->addItem(QString());
-        comboBox_dataBits->addItem(QString());
-        comboBox_dataBits->setObjectName(QString::fromUtf8("comboBox_dataBits"));
+        label_dataBits = new QLabel(widget);
+        label_dataBits->setObjectName(QString::fromUtf8("label_dataBits"));
 
-        gridLayout->addWidget(comboBox_dataBits, 4, 1, 1, 1);
+        gridLayout->addWidget(label_dataBits, 4, 0, 1, 1);
 
-        verticalSpacer = new QSpacerItem(20, 100, QSizePolicy::Minimum, QSizePolicy::Fixed);
+        comboBox_parity = new QComboBox(widget);
+        comboBox_parity->addItem(QString());
+        comboBox_parity->addItem(QString());
+        comboBox_parity->addItem(QString());
+        comboBox_parity->setObjectName(QString::fromUtf8("comboBox_parity"));
 
-        gridLayout->addItem(verticalSpacer, 7, 0, 1, 1);
+        gridLayout->addWidget(comboBox_parity, 5, 1, 1, 1);
 
         comboBox_stopBits = new QComboBox(widget);
         comboBox_stopBits->addItem(QString());
@@ -102,13 +99,14 @@ public:
 
         gridLayout->addWidget(comboBox_stopBits, 3, 1, 1, 1);
 
-        comboBox_parity = new QComboBox(widget);
-        comboBox_parity->addItem(QString());
-        comboBox_parity->addItem(QString());
-        comboBox_parity->addItem(QString());
-        comboBox_parity->setObjectName(QString::fromUtf8("comboBox_parity"));
+        comboBox_dataBits = new QComboBox(widget);
+        comboBox_dataBits->addItem(QString());
+        comboBox_dataBits->addItem(QString());
+        comboBox_dataBits->addItem(QString());
+        comboBox_dataBits->addItem(QString());
+        comboBox_dataBits->setObjectName(QString::fromUtf8("comboBox_dataBits"));
 
-        gridLayout->addWidget(comboBox_parity, 5, 1, 1, 1);
+        gridLayout->addWidget(comboBox_dataBits, 4, 1, 1, 1);
 
         comboBox_baudRate = new QComboBox(widget);
         comboBox_baudRate->addItem(QString());
@@ -123,10 +121,19 @@ public:
 
         gridLayout->addWidget(comboBox_baudRate, 2, 1, 1, 1);
 
-        label_dataBits = new QLabel(widget);
-        label_dataBits->setObjectName(QString::fromUtf8("label_dataBits"));
+        pushButton_clearReceive = new QPushButton(widget);
+        pushButton_clearReceive->setObjectName(QString::fromUtf8("pushButton_clearReceive"));
+        QSizePolicy sizePolicy1(QSizePolicy::Minimum, QSizePolicy::Fixed);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(10);
+        sizePolicy1.setHeightForWidth(pushButton_clearReceive->sizePolicy().hasHeightForWidth());
+        pushButton_clearReceive->setSizePolicy(sizePolicy1);
 
-        gridLayout->addWidget(label_dataBits, 4, 0, 1, 1);
+        gridLayout->addWidget(pushButton_clearReceive, 9, 0, 1, 1);
+
+        verticalSpacer = new QSpacerItem(20, 100, QSizePolicy::Minimum, QSizePolicy::Fixed);
+
+        gridLayout->addItem(verticalSpacer, 8, 0, 1, 1);
 
         checkBox_openSerial = new QCheckBox(widget);
         checkBox_openSerial->setObjectName(QString::fromUtf8("checkBox_openSerial"));
@@ -134,30 +141,30 @@ public:
 
         gridLayout->addWidget(checkBox_openSerial, 6, 0, 1, 1);
 
-        label_stopBits = new QLabel(widget);
-        label_stopBits->setObjectName(QString::fromUtf8("label_stopBits"));
-
-        gridLayout->addWidget(label_stopBits, 3, 0, 1, 1);
-
-        label_baudRate_2 = new QLabel(widget);
-        label_baudRate_2->setObjectName(QString::fromUtf8("label_baudRate_2"));
-        QSizePolicy sizePolicy1(QSizePolicy::Fixed, QSizePolicy::Fixed);
-        sizePolicy1.setHorizontalStretch(0);
-        sizePolicy1.setVerticalStretch(0);
-        sizePolicy1.setHeightForWidth(label_baudRate_2->sizePolicy().hasHeightForWidth());
-        label_baudRate_2->setSizePolicy(sizePolicy1);
-
-        gridLayout->addWidget(label_baudRate_2, 0, 0, 1, 1);
-
         comboBox_serialSelect = new QComboBox(widget);
         comboBox_serialSelect->setObjectName(QString::fromUtf8("comboBox_serialSelect"));
 
         gridLayout->addWidget(comboBox_serialSelect, 1, 0, 1, 2);
 
+        label_stopBits = new QLabel(widget);
+        label_stopBits->setObjectName(QString::fromUtf8("label_stopBits"));
+
+        gridLayout->addWidget(label_stopBits, 3, 0, 1, 1);
+
+        label_baudRate = new QLabel(widget);
+        label_baudRate->setObjectName(QString::fromUtf8("label_baudRate"));
+
+        gridLayout->addWidget(label_baudRate, 2, 0, 1, 1);
+
         label_parity = new QLabel(widget);
         label_parity->setObjectName(QString::fromUtf8("label_parity"));
 
         gridLayout->addWidget(label_parity, 5, 0, 1, 1);
+
+        checkBox_16Show = new QCheckBox(widget);
+        checkBox_16Show->setObjectName(QString::fromUtf8("checkBox_16Show"));
+
+        gridLayout->addWidget(checkBox_16Show, 7, 0, 1, 1);
 
 
         gridLayout_3->addWidget(widget, 0, 1, 1, 1);
@@ -171,6 +178,11 @@ public:
         widget_2->setSizePolicy(sizePolicy2);
         gridLayout_2 = new QGridLayout(widget_2);
         gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
+        label = new QLabel(widget_2);
+        label->setObjectName(QString::fromUtf8("label"));
+
+        gridLayout_2->addWidget(label, 0, 0, 1, 1);
+
         plainTextEdit_singleSend = new QPlainTextEdit(widget_2);
         plainTextEdit_singleSend->setObjectName(QString::fromUtf8("plainTextEdit_singleSend"));
 
@@ -178,22 +190,22 @@ public:
 
         pushButton_send = new QPushButton(widget_2);
         pushButton_send->setObjectName(QString::fromUtf8("pushButton_send"));
-        sizePolicy1.setHeightForWidth(pushButton_send->sizePolicy().hasHeightForWidth());
-        pushButton_send->setSizePolicy(sizePolicy1);
+        sizePolicy.setHeightForWidth(pushButton_send->sizePolicy().hasHeightForWidth());
+        pushButton_send->setSizePolicy(sizePolicy);
 
         gridLayout_2->addWidget(pushButton_send, 1, 1, 1, 1);
 
         pushButton_clearSend = new QPushButton(widget_2);
         pushButton_clearSend->setObjectName(QString::fromUtf8("pushButton_clearSend"));
-        sizePolicy1.setHeightForWidth(pushButton_clearSend->sizePolicy().hasHeightForWidth());
-        pushButton_clearSend->setSizePolicy(sizePolicy1);
+        sizePolicy.setHeightForWidth(pushButton_clearSend->sizePolicy().hasHeightForWidth());
+        pushButton_clearSend->setSizePolicy(sizePolicy);
 
         gridLayout_2->addWidget(pushButton_clearSend, 2, 1, 1, 1);
 
-        label = new QLabel(widget_2);
-        label->setObjectName(QString::fromUtf8("label"));
+        checkBox_16Send = new QCheckBox(widget_2);
+        checkBox_16Send->setObjectName(QString::fromUtf8("checkBox_16Send"));
 
-        gridLayout_2->addWidget(label, 0, 0, 1, 1);
+        gridLayout_2->addWidget(checkBox_16Send, 3, 0, 1, 1);
 
 
         gridLayout_3->addWidget(widget_2, 1, 0, 1, 2);
@@ -211,20 +223,20 @@ public:
     void retranslateUi(QWidget *Stu_AccessPort)
     {
         Stu_AccessPort->setWindowTitle(QCoreApplication::translate("Stu_AccessPort", "Form", nullptr));
-        label_baudRate->setText(QCoreApplication::translate("Stu_AccessPort", "\346\263\242\347\211\271\347\216\207", nullptr));
-        pushButton_clearReceive->setText(QCoreApplication::translate("Stu_AccessPort", "\346\270\205\351\231\244\346\216\245\345\217\227", nullptr));
-        comboBox_dataBits->setItemText(0, QCoreApplication::translate("Stu_AccessPort", "8", nullptr));
-        comboBox_dataBits->setItemText(1, QCoreApplication::translate("Stu_AccessPort", "7", nullptr));
-        comboBox_dataBits->setItemText(2, QCoreApplication::translate("Stu_AccessPort", "6", nullptr));
-        comboBox_dataBits->setItemText(3, QCoreApplication::translate("Stu_AccessPort", "5", nullptr));
+        label_baudRate_2->setText(QCoreApplication::translate("Stu_AccessPort", "\344\270\262\345\217\243\351\200\211\346\213\251", nullptr));
+        label_dataBits->setText(QCoreApplication::translate("Stu_AccessPort", "\346\225\260\346\215\256\344\275\215", nullptr));
+        comboBox_parity->setItemText(0, QCoreApplication::translate("Stu_AccessPort", "\346\227\240", nullptr));
+        comboBox_parity->setItemText(1, QCoreApplication::translate("Stu_AccessPort", "\345\245\207\346\243\200\351\252\214", nullptr));
+        comboBox_parity->setItemText(2, QCoreApplication::translate("Stu_AccessPort", "\345\201\266\346\240\241\351\252\214", nullptr));
 
         comboBox_stopBits->setItemText(0, QCoreApplication::translate("Stu_AccessPort", "1", nullptr));
         comboBox_stopBits->setItemText(1, QCoreApplication::translate("Stu_AccessPort", "1.5", nullptr));
         comboBox_stopBits->setItemText(2, QCoreApplication::translate("Stu_AccessPort", "2", nullptr));
 
-        comboBox_parity->setItemText(0, QCoreApplication::translate("Stu_AccessPort", "\346\227\240", nullptr));
-        comboBox_parity->setItemText(1, QCoreApplication::translate("Stu_AccessPort", "\345\245\207\346\243\200\351\252\214", nullptr));
-        comboBox_parity->setItemText(2, QCoreApplication::translate("Stu_AccessPort", "\345\201\266\346\240\241\351\252\214", nullptr));
+        comboBox_dataBits->setItemText(0, QCoreApplication::translate("Stu_AccessPort", "8", nullptr));
+        comboBox_dataBits->setItemText(1, QCoreApplication::translate("Stu_AccessPort", "7", nullptr));
+        comboBox_dataBits->setItemText(2, QCoreApplication::translate("Stu_AccessPort", "6", nullptr));
+        comboBox_dataBits->setItemText(3, QCoreApplication::translate("Stu_AccessPort", "5", nullptr));
 
         comboBox_baudRate->setItemText(0, QCoreApplication::translate("Stu_AccessPort", "1200", nullptr));
         comboBox_baudRate->setItemText(1, QCoreApplication::translate("Stu_AccessPort", "2400", nullptr));
@@ -236,14 +248,19 @@ public:
         comboBox_baudRate->setItemText(7, QCoreApplication::translate("Stu_AccessPort", "115200", nullptr));
 
         comboBox_baudRate->setCurrentText(QCoreApplication::translate("Stu_AccessPort", "4800", nullptr));
-        label_dataBits->setText(QCoreApplication::translate("Stu_AccessPort", "\346\225\260\346\215\256\344\275\215", nullptr));
+        pushButton_clearReceive->setText(QCoreApplication::translate("Stu_AccessPort", "\346\270\205\351\231\244\346\216\245\345\217\227", nullptr));
         checkBox_openSerial->setText(QCoreApplication::translate("Stu_AccessPort", "\346\211\223\345\274\200\344\270\262\345\217\243", nullptr));
         label_stopBits->setText(QCoreApplication::translate("Stu_AccessPort", "\345\201\234\346\255\242\344\275\215", nullptr));
-        label_baudRate_2->setText(QCoreApplication::translate("Stu_AccessPort", "\344\270\262\345\217\243\351\200\211\346\213\251", nullptr));
+        label_baudRate->setText(QCoreApplication::translate("Stu_AccessPort", "\346\263\242\347\211\271\347\216\207", nullptr));
         label_parity->setText(QCoreApplication::translate("Stu_AccessPort", "\345\245\207\345\201\266\346\240\241\351\252\214\344\275\215", nullptr));
+        checkBox_16Show->setText(QCoreApplication::translate("Stu_AccessPort", "16\350\277\233\345\210\266\346\230\276\347\244\272", nullptr));
+#if QT_CONFIG(tooltip)
+        label->setToolTip(QString());
+#endif // QT_CONFIG(tooltip)
+        label->setText(QCoreApplication::translate("Stu_AccessPort", "\346\225\260\346\215\256\345\217\221\351\200\201\357\274\232", nullptr));
         pushButton_send->setText(QCoreApplication::translate("Stu_AccessPort", "\345\217\221\351\200\201", nullptr));
         pushButton_clearSend->setText(QCoreApplication::translate("Stu_AccessPort", "\346\270\205\351\231\244\345\217\221\351\200\201", nullptr));
-        label->setText(QCoreApplication::translate("Stu_AccessPort", "\346\225\260\346\215\256\345\217\221\351\200\201\357\274\232", nullptr));
+        checkBox_16Send->setText(QCoreApplication::translate("Stu_AccessPort", "16\350\277\233\345\210\266\345\217\221\351\200\201", nullptr));
     } // retranslateUi
 
 };

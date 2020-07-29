@@ -35,18 +35,6 @@ class Ui_Stu_MainWindow
 public:
     QWidget *centralwidget;
     QGridLayout *gridLayout_5;
-    QWidget *widget_2;
-    QGridLayout *gridLayout_9;
-    QPushButton *pushButton_resValueRecorde;
-    QPushButton *pushButton_notice;
-    QToolButton *toolButton_icon;
-    QLabel *label_sign;
-    QSpacerItem *verticalSpacer_8;
-    QPushButton *pushButton_testSpecific;
-    QSpacerItem *verticalSpacer_9;
-    QFrame *line_3;
-    QLabel *label_name;
-    QPushButton *pushButton_resTest;
     QFrame *line_2;
     QStackedWidget *stackedWidget;
     QWidget *page_studentInformation;
@@ -72,6 +60,7 @@ public:
     QSpacerItem *verticalSpacer_3;
     QWidget *page_resTest;
     QGridLayout *gridLayout_7;
+    QTableView *tableView_page_resTest;
     QWidget *widget;
     QGridLayout *gridLayout_4;
     QSpacerItem *horizontalSpacer;
@@ -89,7 +78,6 @@ public:
     QSpacerItem *horizontalSpacer_7;
     QPushButton *pushButton;
     QSpacerItem *horizontalSpacer_4;
-    QTableView *tableView_page_resTest;
     QWidget *page_dataAnalyse;
     QGridLayout *gridLayout_3;
     QWidget *widget_4;
@@ -104,6 +92,18 @@ public:
     QPushButton *pushButton_clearAll;
     QSpacerItem *verticalSpacer_6;
     QTableView *tableView_page_dataAnalyse;
+    QWidget *widget_2;
+    QGridLayout *gridLayout_9;
+    QToolButton *toolButton_icon;
+    QLabel *label_name;
+    QLabel *label_sign;
+    QFrame *line_3;
+    QPushButton *pushButton_notice;
+    QPushButton *pushButton_resTest;
+    QPushButton *pushButton_resValueRecorde;
+    QSpacerItem *verticalSpacer_8;
+    QPushButton *pushButton_testSpecific;
+    QSpacerItem *verticalSpacer_9;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -116,71 +116,6 @@ public:
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         gridLayout_5 = new QGridLayout(centralwidget);
         gridLayout_5->setObjectName(QString::fromUtf8("gridLayout_5"));
-        widget_2 = new QWidget(centralwidget);
-        widget_2->setObjectName(QString::fromUtf8("widget_2"));
-        QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-        sizePolicy.setHorizontalStretch(0);
-        sizePolicy.setVerticalStretch(0);
-        sizePolicy.setHeightForWidth(widget_2->sizePolicy().hasHeightForWidth());
-        widget_2->setSizePolicy(sizePolicy);
-        widget_2->setMinimumSize(QSize(150, 0));
-        gridLayout_9 = new QGridLayout(widget_2);
-        gridLayout_9->setObjectName(QString::fromUtf8("gridLayout_9"));
-        pushButton_resValueRecorde = new QPushButton(widget_2);
-        pushButton_resValueRecorde->setObjectName(QString::fromUtf8("pushButton_resValueRecorde"));
-
-        gridLayout_9->addWidget(pushButton_resValueRecorde, 5, 0, 1, 2);
-
-        pushButton_notice = new QPushButton(widget_2);
-        pushButton_notice->setObjectName(QString::fromUtf8("pushButton_notice"));
-
-        gridLayout_9->addWidget(pushButton_notice, 3, 0, 1, 2);
-
-        toolButton_icon = new QToolButton(widget_2);
-        toolButton_icon->setObjectName(QString::fromUtf8("toolButton_icon"));
-        toolButton_icon->setMinimumSize(QSize(50, 50));
-        toolButton_icon->setMaximumSize(QSize(50, 50));
-
-        gridLayout_9->addWidget(toolButton_icon, 0, 0, 2, 1);
-
-        label_sign = new QLabel(widget_2);
-        label_sign->setObjectName(QString::fromUtf8("label_sign"));
-
-        gridLayout_9->addWidget(label_sign, 1, 1, 1, 1);
-
-        verticalSpacer_8 = new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Fixed);
-
-        gridLayout_9->addItem(verticalSpacer_8, 7, 0, 1, 1);
-
-        pushButton_testSpecific = new QPushButton(widget_2);
-        pushButton_testSpecific->setObjectName(QString::fromUtf8("pushButton_testSpecific"));
-
-        gridLayout_9->addWidget(pushButton_testSpecific, 8, 0, 1, 2);
-
-        verticalSpacer_9 = new QSpacerItem(20, 162, QSizePolicy::Minimum, QSizePolicy::Expanding);
-
-        gridLayout_9->addItem(verticalSpacer_9, 9, 0, 1, 1);
-
-        line_3 = new QFrame(widget_2);
-        line_3->setObjectName(QString::fromUtf8("line_3"));
-        line_3->setFrameShape(QFrame::HLine);
-        line_3->setFrameShadow(QFrame::Sunken);
-
-        gridLayout_9->addWidget(line_3, 2, 0, 1, 2);
-
-        label_name = new QLabel(widget_2);
-        label_name->setObjectName(QString::fromUtf8("label_name"));
-
-        gridLayout_9->addWidget(label_name, 0, 1, 1, 1);
-
-        pushButton_resTest = new QPushButton(widget_2);
-        pushButton_resTest->setObjectName(QString::fromUtf8("pushButton_resTest"));
-
-        gridLayout_9->addWidget(pushButton_resTest, 4, 0, 1, 2);
-
-
-        gridLayout_5->addWidget(widget_2, 0, 0, 1, 1);
-
         line_2 = new QFrame(centralwidget);
         line_2->setObjectName(QString::fromUtf8("line_2"));
         line_2->setFrameShape(QFrame::VLine);
@@ -197,6 +132,9 @@ public:
         widget_3 = new QWidget(page_studentInformation);
         widget_3->setObjectName(QString::fromUtf8("widget_3"));
         widget_3->setGeometry(QRect(10, 10, 286, 241));
+        QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(widget_3->sizePolicy().hasHeightForWidth());
         widget_3->setSizePolicy(sizePolicy);
         gridLayout_6 = new QGridLayout(widget_3);
@@ -305,6 +243,11 @@ public:
         page_resTest->setObjectName(QString::fromUtf8("page_resTest"));
         gridLayout_7 = new QGridLayout(page_resTest);
         gridLayout_7->setObjectName(QString::fromUtf8("gridLayout_7"));
+        tableView_page_resTest = new QTableView(page_resTest);
+        tableView_page_resTest->setObjectName(QString::fromUtf8("tableView_page_resTest"));
+
+        gridLayout_7->addWidget(tableView_page_resTest, 1, 0, 1, 1);
+
         widget = new QWidget(page_resTest);
         widget->setObjectName(QString::fromUtf8("widget"));
         gridLayout_4 = new QGridLayout(widget);
@@ -379,11 +322,6 @@ public:
 
         gridLayout_7->addWidget(widget, 0, 0, 1, 1);
 
-        tableView_page_resTest = new QTableView(page_resTest);
-        tableView_page_resTest->setObjectName(QString::fromUtf8("tableView_page_resTest"));
-
-        gridLayout_7->addWidget(tableView_page_resTest, 1, 0, 1, 1);
-
         stackedWidget->addWidget(page_resTest);
         page_dataAnalyse = new QWidget();
         page_dataAnalyse->setObjectName(QString::fromUtf8("page_dataAnalyse"));
@@ -457,6 +395,67 @@ public:
 
         gridLayout_5->addWidget(stackedWidget, 0, 2, 1, 1);
 
+        widget_2 = new QWidget(centralwidget);
+        widget_2->setObjectName(QString::fromUtf8("widget_2"));
+        sizePolicy.setHeightForWidth(widget_2->sizePolicy().hasHeightForWidth());
+        widget_2->setSizePolicy(sizePolicy);
+        gridLayout_9 = new QGridLayout(widget_2);
+        gridLayout_9->setObjectName(QString::fromUtf8("gridLayout_9"));
+        toolButton_icon = new QToolButton(widget_2);
+        toolButton_icon->setObjectName(QString::fromUtf8("toolButton_icon"));
+        toolButton_icon->setMinimumSize(QSize(50, 50));
+        toolButton_icon->setMaximumSize(QSize(50, 50));
+
+        gridLayout_9->addWidget(toolButton_icon, 0, 0, 2, 1);
+
+        label_name = new QLabel(widget_2);
+        label_name->setObjectName(QString::fromUtf8("label_name"));
+
+        gridLayout_9->addWidget(label_name, 0, 1, 1, 1);
+
+        label_sign = new QLabel(widget_2);
+        label_sign->setObjectName(QString::fromUtf8("label_sign"));
+
+        gridLayout_9->addWidget(label_sign, 1, 1, 1, 1);
+
+        line_3 = new QFrame(widget_2);
+        line_3->setObjectName(QString::fromUtf8("line_3"));
+        line_3->setFrameShape(QFrame::HLine);
+        line_3->setFrameShadow(QFrame::Sunken);
+
+        gridLayout_9->addWidget(line_3, 2, 0, 1, 2);
+
+        pushButton_notice = new QPushButton(widget_2);
+        pushButton_notice->setObjectName(QString::fromUtf8("pushButton_notice"));
+
+        gridLayout_9->addWidget(pushButton_notice, 3, 0, 1, 2);
+
+        pushButton_resTest = new QPushButton(widget_2);
+        pushButton_resTest->setObjectName(QString::fromUtf8("pushButton_resTest"));
+
+        gridLayout_9->addWidget(pushButton_resTest, 4, 0, 1, 2);
+
+        pushButton_resValueRecorde = new QPushButton(widget_2);
+        pushButton_resValueRecorde->setObjectName(QString::fromUtf8("pushButton_resValueRecorde"));
+
+        gridLayout_9->addWidget(pushButton_resValueRecorde, 5, 0, 1, 2);
+
+        verticalSpacer_8 = new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Fixed);
+
+        gridLayout_9->addItem(verticalSpacer_8, 6, 1, 1, 1);
+
+        pushButton_testSpecific = new QPushButton(widget_2);
+        pushButton_testSpecific->setObjectName(QString::fromUtf8("pushButton_testSpecific"));
+
+        gridLayout_9->addWidget(pushButton_testSpecific, 7, 0, 1, 2);
+
+        verticalSpacer_9 = new QSpacerItem(20, 162, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        gridLayout_9->addItem(verticalSpacer_9, 8, 1, 1, 1);
+
+
+        gridLayout_5->addWidget(widget_2, 0, 0, 1, 1);
+
         Stu_MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(Stu_MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
@@ -477,13 +476,6 @@ public:
     void retranslateUi(QMainWindow *Stu_MainWindow)
     {
         Stu_MainWindow->setWindowTitle(QCoreApplication::translate("Stu_MainWindow", "Stu_MainWindow", nullptr));
-        pushButton_resValueRecorde->setText(QCoreApplication::translate("Stu_MainWindow", "\351\230\273\345\200\274\345\210\206\346\236\220", nullptr));
-        pushButton_notice->setText(QCoreApplication::translate("Stu_MainWindow", "\351\200\232\347\237\245\345\205\254\345\221\212", nullptr));
-        toolButton_icon->setText(QCoreApplication::translate("Stu_MainWindow", "...", nullptr));
-        label_sign->setText(QCoreApplication::translate("Stu_MainWindow", "\347\255\276\345\220\215\357\274\232", nullptr));
-        pushButton_testSpecific->setText(QCoreApplication::translate("Stu_MainWindow", "\346\265\213\350\257\225\344\270\223\347\224\250", nullptr));
-        label_name->setText(QCoreApplication::translate("Stu_MainWindow", "\345\247\223\345\220\215\357\274\232", nullptr));
-        pushButton_resTest->setText(QCoreApplication::translate("Stu_MainWindow", "\347\224\265\351\230\273\346\265\213\351\207\217", nullptr));
         pushButton_sureChangePassword->setText(QCoreApplication::translate("Stu_MainWindow", "\347\241\256\350\256\244\344\277\256\346\224\271", nullptr));
         label_userPasswords->setText(QCoreApplication::translate("Stu_MainWindow", "<html><head/><body><p>\345\257\206\347\240\201</p></body></html>", nullptr));
         label_userName->setText(QCoreApplication::translate("Stu_MainWindow", "<html><head/><body><p>\345\247\223\345\220\215</p></body></html>", nullptr));
@@ -505,6 +497,13 @@ public:
 #endif // QT_CONFIG(tooltip)
         pushButton_deleteData->setText(QCoreApplication::translate("Stu_MainWindow", "\345\210\240\351\231\244", nullptr));
         pushButton_clearAll->setText(QCoreApplication::translate("Stu_MainWindow", "\346\270\205\347\251\272", nullptr));
+        toolButton_icon->setText(QCoreApplication::translate("Stu_MainWindow", "...", nullptr));
+        label_name->setText(QCoreApplication::translate("Stu_MainWindow", "\345\247\223\345\220\215\357\274\232", nullptr));
+        label_sign->setText(QCoreApplication::translate("Stu_MainWindow", "\347\255\276\345\220\215\357\274\232", nullptr));
+        pushButton_notice->setText(QCoreApplication::translate("Stu_MainWindow", "\351\200\232\347\237\245\345\205\254\345\221\212", nullptr));
+        pushButton_resTest->setText(QCoreApplication::translate("Stu_MainWindow", "\347\224\265\351\230\273\346\265\213\351\207\217", nullptr));
+        pushButton_resValueRecorde->setText(QCoreApplication::translate("Stu_MainWindow", "\351\230\273\345\200\274\345\210\206\346\236\220", nullptr));
+        pushButton_testSpecific->setText(QCoreApplication::translate("Stu_MainWindow", "\346\265\213\350\257\225\344\270\223\347\224\250", nullptr));
     } // retranslateUi
 
 };

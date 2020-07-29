@@ -12,6 +12,7 @@ Stu_AccessPort::Stu_AccessPort(QWidget *parent) :
     initSerials();              // 初始化串口，设置波特率，停止位...
     signalsToSlots();
     ui->checkBox_openSerial->setCheckState(Qt::Checked);    // 打开窗口选中
+    showDataWidge = new Stu_ShowTalkData();
 }
 
 Stu_AccessPort::~Stu_AccessPort()
@@ -224,6 +225,25 @@ void Stu_AccessPort::readData()
     timer->stop();
 }
 
+QString Stu_AccessPort::QByteArrayToHEX(QByteArray buf)
+{
+    QString temp;
+    for(int i = 0; i < buf.length(); i++)
+    {
+        if((int)buf.at(i) >= 0)
+        {
+            temp += QString::number(buf.at(i), 16) + " ";
+            //qDebug() << "int" <<(int)buf.at(i) << "string" << QString::number(abs(buf.at(i)), 16);
+        }
+        else
+        {
+            temp += QString::number(128 + 128 - abs(buf.at(i)), 16) + " ";
+            //qDebug() << "int" <<(int)buf.at(i) << "string" << QString::number(128 + 128 - abs(buf.at(i)), 16);
+        }
+    }
+    return temp;
+}
+
 // 是否16进制显示
 void Stu_AccessPort::on_checkBox_16Show_stateChanged(int arg1)
 {
@@ -259,6 +279,7 @@ bool isBalance(QByteArray rec)
     return false;
 }
 
+/*
 // 单次测量
 void Stu_AccessPort::slot_singleTest()
 {
@@ -313,6 +334,124 @@ void Stu_AccessPort::slot_singleTest()
     }
     timer->stop();
 }
+*/
+
+// 单词测量，二分法
+void Stu_AccessPort::slot_singleTest()
+{
+    if(isMainWindowUse && isSingletest)
+    {
+        char dataOfSend[1] = {0x00};
+        // 电阻丝滑动，获取初值和末值对应的接收值
+        vis = serial.readAll();                                 // 从串口读取数据放在vis1中
+        if(time == 12)
+        {
+            recEnd = vis;
+            if(recStart == recEnd)
+            {
+                QMessageBox::StandardButton back = QMessageBox::information(this, "提示", "发送00 00与发送FF FF返回的值相同！, 是否继续？", QMessageBox::Yes, QMessageBox::No);
+                if(back == QMessageBox::No)
+                {
+                    QMessageBox::information(this, "提示", "下次测量时请重新运行此程序。");
+                    return;
+                }
+            }
+        }
+        if(time < 12)
+        {
+            dataOfSend[0] = {(char)startArr[time]};
+            if(R0 != 0 && time == 9)
+                dataOfSend[0] = {conver};
+            if(time == 9)
+                recStart = vis;
+        }
+        else
+        {
+            if(time % 3 == 0)
+            {
+                qDebug() << vis;
+                if(vis == recStart)
+                    converByte(true, QByteArrayToHEX(vis));  // 调用
+                else
+                    converByte(false, QByteArrayToHEX(vis)); // 调用
+                if(isDone)
+                {
+                    isDone = false;
+                    showDataWidge->showDataWidget(showData);
+                    return;
+                }
+                dataOfSend[0] = {conver};
+            }
+            else
+            {
+                qDebug() << vis;
+                if(time % 3 == 1)
+                    dataOfSend[0] = {(char)mid1};
+                else
+                    dataOfSend[0] = {(char)mid2};
+            }
+        }
+        time++;
+        int num = dataOfSend[0] & 0xFF;
+        serial.write(dataOfSend, 1);
+
+        if(time % 3 == 1)
+            showData += QByteArrayToHEX(vis) + '\n';
+
+        if(time % 3 == 1)
+            showData += QString::number(cnt++) + '\t' + QString::number(num, 16) + "    ";
+        else
+            showData += QString::number(num, 16) + "    ";
+
+        showDataWidge->showDataWidget(showData);
+        vis.clear();
+    }
+    timer->stop();
+}
+
+// 把两个字节的01转成一个整型数据，转换两次取平均值，再分成两个字节对应的整数，以便能采用二分法
+void Stu_AccessPort::converByte(bool flag, QString str)
+{
+    // 1.把两个字节的数合成一个数，用到位操作
+    int start = (start1 << 8) + start2;
+    int end = (end1 << 8) + end2;
+    int mid = (start + end) / 2;
+    mid1 = (mid >> 8) + 0x00;
+    mid2 = (mid & 0xFF);
+    if(flag)
+    {
+        start1 = mid1;
+        start2 = mid2;
+    }
+    else
+    {
+        end1 = mid1;
+        end2 = mid2;
+    }
+
+
+    if(end - start <= 1)                                // 这是二分法的边界，当区间长度为1是，就找到临界跳变点
+    {
+        if(conver == 0x20)
+        {
+            R01 = 10 / (1 - mid / pow(2, 16));
+            emit  testDone(R0, R01, sqrt(R0 * R01));
+            conver = 0x00;
+            time = 0;
+            isDone = true;
+            circuitPartReset();
+            showData += str + "\n一次测量结束\n\n";
+        }
+        else
+        {
+            R0 = 10 / (1 - mid / pow(2, 16));
+            conver = 0x20;                              // 控制电桥反转 0x20 = 0010 0000
+            time = 6;
+            circuitPartReset();
+            showData += str + "\n电桥反转\n";
+        }
+    }
+}
 
 // 多次测量
 void Stu_AccessPort::slot_repeatTest()
@@ -320,20 +459,25 @@ void Stu_AccessPort::slot_repeatTest()
     timer->stop();
 }
 
-// 电桥平衡时，把控制R0的那20位二进制串转化为十进制数
-int Stu_AccessPort::getR0(int i0, int i1)
-{
-    QString str_16 = QString::number(i0, 16) + QString::number(i1, 16);
-    int int_10 = str_16.toInt(NULL, 16);                   // 十六进制字符串转为十进制数。如2b5f67H->2842471
-    return int_10;
-}
-
 // 电路参数归零
 void Stu_AccessPort::circuitReset()
 {
+    circuitPartReset();
     time = 0;
-    for(int i = 0; i < 3; i++)          // 一次测量完成后，控制R0的数值全部归零
-        index[i] = 0;
+    isDone = false;
+    showData.clear();
+    R0 = 0;
+    R01 = 0;
+    conver = 0;
+}
+
+void Stu_AccessPort::circuitPartReset()
+{
+    start1 = 0x00;
+    start2 = 0x00;
+    end1 = 0xFF;
+    end2 = 0xFF;
+    cnt = 0;
     vis.clear();
 }
 

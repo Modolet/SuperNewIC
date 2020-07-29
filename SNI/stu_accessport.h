@@ -12,6 +12,7 @@
 #include <QMessageBox>
 #include <QDebug>
 #include <QTimer>
+#include "stu_showtalkdata.h"
 
 
 namespace Ui {
@@ -27,6 +28,7 @@ public:
     ~Stu_AccessPort();
 
     void mainWinSend(QByteArray str);
+    void circuitReset();                        // 参数归零
 
 signals:
     void testDone(double, double, double);          // 每一组测量完成的信号
@@ -66,23 +68,37 @@ public:
     bool isMainWindowUse = true;    // 用作是否主窗口用的标识
     bool isSingletest = true;       // 用作是否单次测量的标识
     bool isStop = false;
+    Stu_ShowTalkData *showDataWidge;
 
 private:
     Ui::Stu_AccessPort *ui;
     QSerialPort serial;             // 全局串口对象
-    int index[3] = {0, 0, 0};
+    //int index[3] = {0, 0, 0};
     QByteArray vis;
     int time = 0;
     double R0 = 0, R01 = 0, Rx = 0;
     QTimer *timer;                  // 创建一个全局定时器，硬件接收端口数据需要延迟一段时间
     QString str_16, str_char;
 
+    int start1 = 0x00, start2 = 0x00, end1 = 0xFF, end2 = 0xFF, mid1, mid2;
+    int startArr[12] = {0x00, 0x00, 0x00,
+                        0x40, 0x00, 0x00,
+                        0x00, 0x00, 0x00,
+                        0x00, 0xFF, 0XFF};
+    QByteArray recStart, recEnd;
+    bool isDone = false;
+    char conver = 0x00;
+    QString showData;
+    int cnt = 0;
+
+
 private:
     void findSerial();                          // 查找计算机可用串口
     void initSerials();                         // 初始化串口，全部默认
     void signalsToSlots();                      // 把信号和槽函数连接起来
-    int getR0(int, int);                        // 把控制R0的16位二进制代码转为十进制
-    void circuitReset();                        // 参数归零
+    void circuitPartReset();                    // 电路部分参数置零
+    void converByte(bool, QString);
+    QString QByteArrayToHEX(QByteArray buf);
 };
 
 #endif // STU_ACCESSPORT_H
